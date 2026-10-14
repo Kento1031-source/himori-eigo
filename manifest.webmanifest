@@ -1,0 +1,30 @@
+{
+  "name": "灯守の旅路 英語の章",
+  "short_name": "灯守の旅路",
+  "description": "敵が英語で問いかけるRPG。正解すれば攻撃が決まる。単語・熟語・文法・長文を、冒険しながら練習できます。無料・ブラウザですぐ遊べます。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0907",
+  "theme_color": "#0e0c0a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

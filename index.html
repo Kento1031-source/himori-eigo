@@ -3,7 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="冒険しながら英語の単語・熟語・文法・長文を学べる、ブラウザで遊べるRPG。">
+<meta name="description" content="敵が英語で問いかけるRPG。正解すれば攻撃が決まる。単語・熟語・文法・長文を、冒険しながら練習できます。無料・ブラウザですぐ遊べます。">
+<link rel="canonical" href="https://kento1031-source.github.io/himori-eigo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="灯守の旅路 英語の章">
+<meta property="og:title" content="灯守の旅路 英語の章">
+<meta property="og:description" content="敵が英語で問いかけるRPG。正解すれば攻撃が決まる。単語・熟語・文法・長文を、冒険しながら練習できます。無料・ブラウザですぐ遊べます。">
+<meta property="og:url" content="https://kento1031-source.github.io/himori-eigo/">
+<meta property="og:image" content="https://kento1031-source.github.io/himori-eigo/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="灯守の旅路 英語の章">
+<meta name="twitter:description" content="敵が英語で問いかけるRPG。正解すれば攻撃が決まる。単語・熟語・文法・長文を、冒険しながら練習できます。無料・ブラウザですぐ遊べます。">
+<meta name="twitter:image" content="https://kento1031-source.github.io/himori-eigo/og.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="灯守の旅路">
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
 </head>
 <body>
 <title>灯守の旅路 英語の章</title>
@@ -324,6 +346,11 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 @keyframes chapin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .egv .stg{background:#f2b75a1f;border-radius:calc(var(--u)*1);padding:calc(var(--u)*2) calc(var(--u)*3)}
 .egv .lb{display:inline-block;font-size:calc(var(--u)*6.5);line-height:1.6;background:var(--bronze2);color:#ffe2a8;border-radius:calc(var(--u)*.8);padding:0 calc(var(--u)*1.8);margin-right:calc(var(--u)*2.5);vertical-align:.1em}
+.qz .qrep{font-size:max(10px,calc(var(--u)*5.5));color:var(--mist);text-decoration:underline;text-underline-offset:2px;margin-left:auto;margin-right:calc(var(--u)*4);padding:calc(var(--u)*3) calc(var(--u)*2);white-space:nowrap}
+.qz .qrep:hover,.qz .qrep:focus-visible{color:var(--line)}
+.a2hs{position:absolute;left:50%;bottom:calc(var(--u)*6);transform:translateX(-50%);width:calc(var(--u)*236);box-sizing:border-box;background:rgba(20,16,12,.94);border:1px solid var(--bronze);border-radius:calc(var(--u)*3);color:var(--line);font-size:max(11px,calc(var(--u)*6.2));line-height:1.55;padding:calc(var(--u)*4) calc(var(--u)*6);z-index:40;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.a2hs b{color:var(--lamp)}
+.a2hs .x{display:block;text-align:right;color:var(--mist);margin-top:calc(var(--u)*2);font-size:max(10px,calc(var(--u)*5.5))}
 </style>
 <div id="app">
   <div id="screen" aria-label="ゲーム画面">
@@ -4391,6 +4418,16 @@ function zzz(t) { return { life: 40, draw(c, k) { c.fillStyle = '#c8d8ff'; c.fon
 
 /* ===== ことばの問い（英語）: data, goals, quiz window, records ===== */
 const EG_CATS = { vocab: { c: '単', n: '単語' }, grammar: { c: '文', n: '文法' }, idiom: { c: '熟', n: '熟語' }, reading: { c: '読', n: '長文' } };
+const EG_MAIL = 'kento.nocloud1031@gmail.com';
+// mailto link for reporting a mistake in one question (no personal data, only the question)
+function egReportUrl(Q, C) {
+  const tx = h => String(h || '').replace(/<span class="qb"><\/span>|<i class="qb"><\/i>|<b class="qb"><\/b>/g, ' ____ ').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim();
+  const id = Q.id || (Q.key + (Q.dir != null ? '#' + Q.dir : ''));
+  const lines = ['【問題ID】' + id, '【分野】' + EG_CATS[Q.cat].n, '【問題】' + (Q.qtext || tx(Q.prompt) + (Q.sub ? ' ' + tx(Q.sub) : '')).slice(0, 300),
+    '【選択肢】' + Q.opts.map((o, i) => (i + 1) + '. ' + o.t).join(' / '), '【正解とされた答え】' + (Q.ans + 1) + '. ' + Q.opts[Q.ans].t,
+    C ? '【選んだ答え】' + C.t : '', '', '【気づいた点】（ここに書いてください）', ''].filter((l, i, a) => l !== '' || i >= a.length - 3);
+  return 'mailto:' + EG_MAIL + '?subject=' + encodeURIComponent('［灯守の旅路 英語の章］問題の誤りの報告 ' + id) + '&body=' + encodeURIComponent(lines.join('\n'));
+}
 const EG_DAY = 864e5;
 const EG_KN={
  v_reserve:{cat:'vocab',t:'reserve（予約する）',l:'reserve は「席や部屋を、使う前に取っておく」という意味です。お店やホテルの場面で、時間や人数と一緒によく出てきます。名詞（物事の名前を表す言葉）は reservation で、make a reservation で「予約をする」。例：I reserved a room for two nights.（2泊分の部屋を予約しました）'},
@@ -10795,8 +10832,8 @@ const EG_GOALS = [
   { id: 'g2', n: '中学卒業レベル', note: '中学で習う内容をひととおり身につけたい人に。', tiers: { 1: 0.6, 2: 0.4 }, d: [4, 3, 0.5, 0], cat: [45, 30, 15, 10] },
   { id: 'g3', n: '高校中級レベル', note: '高校1〜2年の内容まで。日常の英語や短い文章を読みたい人に。', tiers: { 1: 0.15, 2: 0.5, 3: 0.35 }, d: [1, 4, 2, 0], cat: [45, 25, 15, 15] },
   { id: 'g4', n: '高校卒業レベル', note: '高校卒業・大学入試の基礎まで。長めの英文にも挑戦します。', tiers: { 2: 0.3, 3: 0.55, 4: 0.15 }, d: [0.5, 3, 5, 0.6], cat: [40, 25, 15, 20] },
-  { id: 'g5', n: '仕事で使う英語', note: '会議・メール・お知らせの単語と表現が多め。点数で判定される英語テストで600〜800点前後を目指す人に。', tiers: { 2: 0.15, 3: 0.3, 4: 0.55 }, d: [0.4, 2.5, 5, 1.5], cat: [40, 25, 15, 20] },
-  { id: 'g6', n: '上級を目指す', note: '難しめの単語・熟語と、論説文の長文まで。大学中級程度、級で判定される英語テストの上位級（準1級前後）を目指す人に。', tiers: { 3: 0.3, 4: 0.2, 5: 0.5 }, d: [0.2, 1.2, 4, 6], cat: [40, 20, 15, 25] },
+  { id: 'g5', n: '仕事で使う英語', note: '会議・メール・お知らせの単語と表現が多め。点数式の英語テストで600〜800点前後を目指す人の、読む力の土台に。', tiers: { 2: 0.15, 3: 0.3, 4: 0.55 }, d: [0.4, 2.5, 5, 1.5], cat: [40, 25, 15, 20] },
+  { id: 'g6', n: '上級を目指す', note: '難しめの単語・熟語と、論説文の長文まで。級で判定される英語テストの上位級（準1級前後）を目指す人の、語彙・読解の練習に。', tiers: { 3: 0.3, 4: 0.2, 5: 0.5 }, d: [0.2, 1.2, 4, 6], cat: [40, 20, 15, 25] },
 ];
 /* pairs too close in meaning to appear as each other's wrong choices */
 const EG_SYN = [['famous', 'popular'], ['useful', 'convenient'], ['kind', 'polite'], ['common', 'familiar'], ['laugh', 'smile'], ['cry', 'shout'], ['practice', 'study'], ['accept', 'allow'], ['accept', 'approve'], ['accept', 'admit'], ['realize', 'discover'], ['create', 'develop'], ['encourage', 'support'], ['protect', 'prevent'], ['avoid', 'prevent'], ['confirm', 'review'], ['apply', 'register'], ['available', 'possible'], ['still', 'already'], ['still', 'yet'], ['often', 'usually'], ['perhaps', 'probably'], ['maybe', 'perhaps'], ['essential', 'crucial'], ['essential', 'significant'], ['hire', 'recruit'], ['resign', 'retire'], ['verify', 'confirm'], ['client', 'customer'], ['tentative', 'preliminary'], ['alleviate', 'mitigate'], ['comprehend', 'understand'], ['indispensable', 'essential'], ['attitude', 'character'], ['examine', 'survey'], ['obvious', 'clear'], ['look forward to', 'be interested in'], ['deal with', 'cope with'], ['carry out', 'conduct'], ['put off', 'call off'], ['in spite of', 'regardless of'], ['make use of', 'take advantage of'], ['look into', 'figure out'], ['rule out', 'get rid of'], ['stand out', 'be famous for']];
@@ -15924,8 +15961,8 @@ const egDayKey = (t = Date.now()) => { const d = new Date(t); return d.getFullYe
 const Eigo = {
   KEY: 'himori_eigo_v1', S: null, sw: [], count: 0, recent: [], recentQ: [], lastDir: {}, lastId: {}, active: null, cur: null,
   def() { return { v: 1, set: { time: 0, cat: 'all', who: 0, auto: 1, goal: null, voice: 1 }, rev: {}, miss: {}, mast: {}, daily: {}, tot: {}, n: 0 }; },
-  load() {
-    let o = null; try { o = JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch (e) { o = null; }
+  load(src) {
+    let o = src || null; if (!o) try { o = JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch (e) { o = null; }
     const d = this.def();
     if (o && o.v === 1) {
       for (const k of ['rev', 'miss', 'mast', 'daily', 'tot']) if (o[k] && typeof o[k] === 'object' && !Array.isArray(o[k])) d[k] = o[k];
@@ -16005,7 +16042,7 @@ const Eigo = {
       say: q.p ? q.ev.replace('____', q.o[0]) : q.q.replace('____', q.o[0]),
       long: q.cat === 'reading' || q.o.some(s => s.length > 13),
       opts: order.map(oi => ({ t: q.o[oi], en: true, ok: oi === 0, why: q.w[oi] })), ans: order.indexOf(0),
-      prompt: `<span lang="en">${bl}</span>`, sub: '',
+      qtext: q.q, prompt: `<span lang="en">${bl}</span>`, sub: '',
       filled: q.p ? '' : `<span lang="en">${esc(q.q).replace('____', '<mark>' + esc(q.o[0]) + '</mark>')}</span>`,
     };
   },
@@ -16116,10 +16153,12 @@ const Eigo = {
           (Q.ja ? `<p><span class="lb">${Q.passage ? '質問の意味' : '文の意味'}</span>${esc(Q.ja)}</p>` : '') +
           (Q.ev ? `<p><span class="lb">根拠</span><span lang="en">${esc(Q.ev).replace('____', '<mark>' + esc(Q.opts[Q.ans].t) + '</mark>')}</span></p>` : '') +
           `<p class="lk"><span class="lb">次はここを見る</span>${esc(Q.lk)}</p></div>` +
-          `<div class="qf"><span class="qhint">↑↓でスクロール${ok && S.set.auto ? '・Bで一時停止' : ''}</span><button type="button" class="qnext">次へ ▶</button></div>`;
+          `<div class="qf"><span class="qhint">↑↓でスクロール${ok && S.set.auto ? '・Bで一時停止' : ''}</span><a class="qrep" href="${egReportUrl(Q, C)}" target="_blank" rel="noopener">誤りを報告</a><button type="button" class="qnext">次へ ▶</button></div>`;
         bindSay();
         win.querySelector('.qnext').addEventListener('click', ev => { ev.stopPropagation(); if (el - ansAt > 8) { Snd.fx('cur'); finish(); } });
         win.querySelector('.qr').addEventListener('pointerdown', () => { hold = true; });
+        win.querySelector('.qrep').addEventListener('click', ev => { ev.stopPropagation(); hold = true; });
+        win.querySelector('.qrep').addEventListener('pointerdown', ev => { ev.stopPropagation(); hold = true; });
         if (voice && !ok) hold = true;
       };
       const h = {
@@ -16208,7 +16247,7 @@ const Eigo = {
       `<div class="eg2">${row('今日の回答', today.a + '問')}${row('今日の正解', today.c + '問（' + pct(today.c, today.a) + '）')}${row('累計の回答', all.a + '問')}${row('累計の正答率', pct(all.c, all.a))}${row('連続学習', this.streak() + '日')}${row('復習待ち', dueN + '件（全' + Object.keys(S.rev).length + '件）')}</div>` +
       `<div class="egh">直近7日の回答数</div><div class="egw">${days.map(d => `<div><span class="num">${d.a}</span><i style="height:${Math.max(2, Math.round(d.a / mx * 34))}px"></i><small>${d.lab}</small></div>`).join('')}</div>` +
       `<div class="egh">分野ごとの正答率</div>${Object.keys(EG_CATS).map(c => { const t = S.tot[c] || { a: 0, c: 0 }; return `<div class="egc2"><span>${EG_CATS[c].n}</span><div class="bar"><i style="width:${t.a ? Math.round(t.c / t.a * 100) : 0}%"></i></div><span class="num">${pct(t.c, t.a)}</span></div>`; }).join('')}` +
-      `<p class="egn">本作の英語の問題・解説はすべて独自に作成したものです。特定の試験団体とは関係がなく、試験の点数や合格を保証するものではありません。</p>`;
+      `<p class="egn">本作の英語の問題・解説はすべて独自に作成したものです。特定の試験団体とは関係がなく、試験の点数や合格を保証するものではありません。練習できるのは「読む力」（単語・熟語・文法・長文）で、聞く・話す・書く練習は含みません。</p>`;
   },
   lectureHtml(k) {
     const K = EG_KN[k], n = EG_QS.filter(q => q.k === k).length, m = this.S.miss[k] || 0;
@@ -16439,16 +16478,42 @@ Eigo.aboutHtml = () => [
   '<p class="egh">このアプリについて</p>',
   '<p>『灯守の旅路 英語の章』は、冒険しながら英語の単語・熟語・文法・長文を学べるRPGです。問題・文章・解説・曲・絵は、すべてこのアプリのために独自に作ったものです。特定の試験団体・出版社・学校の教材とは関係ありません。</p>',
   '<p class="egh">学習について</p>',
-  '<p>このアプリは英語の練習の場です。学習の成果や、試験の点数・合否を保証するものではありません。問題や解説は確認を重ねていますが、誤りが残っている可能性があります。</p>',
+  '<p>このアプリは英語を「読む力」（単語・熟語・文法・長文）の練習の場です。聞く・話す・書く練習は含みません。学習の成果や、試験の点数・合否を保証するものではありません。問題や解説は確認を重ねていますが、誤りが残っている可能性があります。</p>',
   '<p class="egh">誤りの報告・お問い合わせ</p>',
-  '<p>問題・解説の誤りや、お気づきの点は、次のアドレスまでお知らせください。<br><span lang="en">kento.nocloud1031@gmail.com</span></p>',
+  '<p>問題・解説の誤りや、お気づきの点は、次のアドレスまでお知らせください。問題の解説画面の「誤りを報告」を押すと、問題の番号が入ったメールを作れます。<br><span lang="en">kento.nocloud1031@gmail.com</span></p>',
   '<p class="egh">データの保存について</p>',
   '<p>冒険の記録と英語の記録は、この端末のブラウザの中にだけ保存されます。外部へ送信することはありません。ブラウザの履歴やサイトデータを消すと、記録も消えます。</p>',
-  '<p>画面の表示のため、文字の形（Google Fonts）と3D表示用のプログラム（cdnjs）をインターネットから読み込みます。このとき、通常のWebページと同じく、お使いの端末の通信情報が各サービスに届きます。発音ボタンは端末の読み上げ機能を使います（端末の設定によっては、外部の音声サービスが使われる場合があります）。</p>',
+  '<p class="egh">記録を守るために</p>',
+  '<p>・iPhone・iPadのSafariでは、しばらく開かないとサイトのデータが消されることがあります。共有ボタンから<b>「ホーム画面に追加」</b>をして、ホーム画面から遊ぶと消えにくくなります。<br>・メニューの「セーブ」→「セーブコードを表示」で出るコードには、冒険と英語の記録の両方が入っています。メモ帳などに控えておけば、機種を変えても、タイトル画面の「コードで再開」で続きから遊べます。</p>',
+  '<p>画面の表示のため、文字の形（Google Fonts）と3D表示用のプログラム（cdnjs）をインターネットから読み込みます。このとき、通常のWebページと同じく、お使いの端末の通信情報（IPアドレスなど）が各サービスに届きます。このページを配信しているGitHub Pages（GitHub社）にも、同じく通常のアクセス記録が残ります。本作の作者が、利用者を特定する情報を集めることはありません。発音ボタンは端末の読み上げ機能を使います（端末の設定によっては、外部の音声サービスが使われる場合があります）。</p>',
   '<p class="egh">使用しているもの（ライセンス）</p>',
   '<p class="egm">three.js r128 — Copyright © 2010-2021 three.js authors（MIT License）<br>Shippori Mincho B1 / Zen Kaku Gothic New — SIL Open Font License 1.1（Google Fonts）<br>そのほかのプログラム・絵・曲・文章は本作のオリジナルです。</p>',
 ].join('');
 Eigo.about = function () { return this.view(this.aboutHtml(), 'アプリについて'); };
+
+/* ===== save code carries the English record too ===== */
+function egPack(str) { try { const o = JSON.parse(str); if (!Eigo.S) Eigo.load(); o._eg = Eigo.S; return JSON.stringify(o); } catch (e) { return str; } }
+function egUnpack(d) {
+  if (d && d.v === 1 && Array.isArray(d.party) && d._eg && typeof d._eg === 'object' && d._eg.v === 1) { try { Eigo.load(d._eg); Eigo.save(); } catch (e) { } }
+  if (d) delete d._eg; return d;
+}
+/* ===== phones: suggest adding to the home screen (keeps the record from being cleared) ===== */
+(function a2hsHint() {
+  const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+  if (!IS_TOUCH || standalone || !/^https:$/.test(location.protocol) || /claude\.ai|claudeusercontent/.test(location.hostname)) return;
+  let seen = 0; try { seen = +localStorage.getItem('himori_a2hs') || 0; } catch (e) { return; }
+  if (seen >= 2) return;
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  setTimeout(() => {
+    const t = document.createElement('div'); t.className = 'a2hs';
+    t.innerHTML = '記録を消えにくくするには、' + (ios ? '下の<b>共有ボタン</b>から<b>「ホーム画面に追加」</b>' : 'ブラウザのメニューから<b>「ホーム画面に追加」</b>') + 'をして、ホーム画面から遊んでください。<span class="x">タップで閉じる</span>';
+    t.addEventListener('pointerdown', e => { e.stopPropagation(); e.preventDefault(); t.remove(); }, true);
+    t.addEventListener('click', e => e.stopPropagation(), true);
+    scr.appendChild(t);
+    try { localStorage.setItem('himori_a2hs', String(seen + 1)); } catch (e) { }
+    setTimeout(() => t.remove(), 15000);
+  }, 2500);
+})();
 
 /* ===== story guidance: current goal, chapter cards, journey log ===== */
 const Story = {
@@ -16689,8 +16754,8 @@ async function menuSave() {
     Msg.close();
   } else if (r === 1) {
     G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir;
-    const code = toCode(serialize());
-    await modalInput({ label: 'このコードを コピーして 保管してください。 タイトル画面の「コードで再開」で つづきから 遊べます。', value: code, area: true, readonly: true, okText: 'コピーして 閉じる', y: 30, copy: true });
+    const code = toCode(egPack(serialize()));
+    await modalInput({ label: 'このコードを コピーして 保管してください（冒険と英語の記録が入っています）。 タイトル画面の「コードで再開」で 別の端末でも つづきから 遊べます。', value: code, area: true, readonly: true, okText: 'コピーして 閉じる', y: 30, copy: true });
   }
 }
 async function menuSettings() {
@@ -17070,7 +17135,7 @@ async function titleFlow() {
     if (r === 3) { await Eigo.about(); continue; }
     if (r === 2) {
       const code = await modalInput({ label: 'セーブコードを はりつけて ください。', area: true, cancel: 'やめる', okText: '再開する', y: 40 });
-      if (code) { try { const d = JSON.parse(fromCode(code)); if (await continueGame(d)) return; } catch (e) { Snd.fx('buzz'); await say('コードが 正しくないようです。'); Msg.close(); } }
+      if (code) { try { const d = egUnpack(JSON.parse(fromCode(code))); if (await continueGame(d)) return; } catch (e) { Snd.fx('buzz'); await say('コードが 正しくないようです。'); Msg.close(); } }
     }
   }
 }

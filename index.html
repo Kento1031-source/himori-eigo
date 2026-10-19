@@ -16482,7 +16482,7 @@ Eigo.aboutHtml = () => [
   '<p class="egh">誤りの報告・お問い合わせ</p>',
   '<p>問題・解説の誤りや、お気づきの点は、次のアドレスまでお知らせください。問題の解説画面の「誤りを報告」を押すと、問題の番号が入ったメールを作れます。<br><span lang="en">kento.nocloud1031@gmail.com</span></p>',
   '<p class="egh">データの保存について</p>',
-  '<p>冒険の記録と英語の記録は、この端末のブラウザの中にだけ保存されます。外部へ送信することはありません。ブラウザの履歴やサイトデータを消すと、記録も消えます。</p>',
+  '<p>冒険の記録は、フィールドを歩いているあいだ自動で保存され、次に開いたときは前回の続きから始まります。タイトル画面へは、メニューの「セーブ」→「タイトルへ もどる」で戻れます。</p><p>冒険の記録と英語の記録は、この端末のブラウザの中にだけ保存されます。外部へ送信することはありません。ブラウザの履歴やサイトデータを消すと、記録も消えます。</p>',
   '<p class="egh">記録を守るために</p>',
   '<p>・iPhone・iPadのSafariでは、しばらく開かないとサイトのデータが消されることがあります。共有ボタンから<b>「ホーム画面に追加」</b>をして、ホーム画面から遊ぶと消えにくくなります。<br>・メニューの「セーブ」→「セーブコードを表示」で出るコードには、冒険と英語の記録の両方が入っています。メモ帳などに控えておけば、機種を変えても、タイトル画面の「コードで再開」で続きから遊べます。</p>',
   '<p>画面の表示のため、文字の形（Google Fonts）と3D表示用のプログラム（cdnjs）をインターネットから読み込みます。このとき、通常のWebページと同じく、お使いの端末の通信情報（IPアドレスなど）が各サービスに届きます。このページを配信しているGitHub Pages（GitHub社）にも、同じく通常のアクセス記録が残ります。本作の作者が、利用者を特定する情報を集めることはありません。発音ボタンは端末の読み上げ機能を使います（端末の設定によっては、外部の音声サービスが使われる場合があります）。</p>',
@@ -16514,6 +16514,28 @@ function egUnpack(d) {
     setTimeout(() => t.remove(), 15000);
   }, 2500);
 })();
+/* ===== resume where the player left off: autosave on the field + open straight into the save ===== */
+const AutoSave = {
+  last: 0, map: null,
+  now(force) {
+    if (!fieldIdle() || !G || !G.clock || !Field.p) return false;
+    const t = performance.now();
+    if (!force && this.map === Field.m.id && t - this.last < 15000) return false;
+    G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir;
+    const ok = saveGame(); this.last = t; this.map = Field.m.id; return ok;
+  },
+};
+setInterval(() => { try { AutoSave.now(false); } catch (e) { } }, 1000);
+document.addEventListener('visibilitychange', () => { if (document.hidden) try { AutoSave.now(true); } catch (e) { } });
+addEventListener('pagehide', () => { try { AutoSave.now(true); } catch (e) { } });
+function egAutoResume() {
+  try { if (sessionStorage.getItem('himori_to_title')) { sessionStorage.removeItem('himori_to_title'); return null; } } catch (e) { }
+  return readSave();
+}
+function egToTitle() {
+  try { AutoSave.now(true); sessionStorage.setItem('himori_to_title', '1'); } catch (e) { }
+  location.reload();
+}
 
 /* ===== story guidance: current goal, chapter cards, journey log ===== */
 const Story = {
@@ -16746,7 +16768,8 @@ async function menuStatus() {
   wv.remove();
 }
 async function menuSave() {
-  const r = await menu(['冒険を 記録する', 'セーブコードを 表示', 'やめる'], { x: 82, y: 6, w: 130, title: 'セーブ' });
+  const r = await menu(['冒険を 記録する', 'セーブコードを 表示', 'タイトルへ もどる', 'やめる'], { x: 82, y: 6, w: 130, title: 'セーブ' });
+  if (r === 2) { egToTitle(); return; }
   if (r === 0) {
     G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir;
     if (saveGame()) { Snd.fx('save'); await say('冒険の 記録を のこしました。\f（このブラウザに 保存されます）'); }
@@ -17140,8 +17163,12 @@ async function titleFlow() {
   }
 }
 async function startNew() {
-  const name = await modalInput({ label: '主人公の 名前を 入れてください（6文字まで）', value: 'ハル', max: 6, y: 72, okText: 'これで はじめる' });
-  const nm = String(name || '').trim().slice(0, 6) || 'ハル';
+  let nm = '', tries = 0;
+  while (!nm) {
+    const name = await modalInput({ label: tries ? '名前が 入っていません。 主人公の 名前を 入れてください（6文字まで）' : '主人公の 名前を 入れてください（6文字まで）', value: '', max: 6, y: 72, okText: 'これで はじめる' });
+    nm = String(name || '').trim().slice(0, 6);
+    if (!nm) { tries++; Snd.fx('buzz'); }
+  }
   newGame(nm);
   await Eigo.chooseGoal('new');
   Snd.stop(1); await fadeOut(50); UI.clear();
@@ -17252,7 +17279,7 @@ function boot(data) {
   requestAnimationFrame(frameLoop);
   const go = () => {
     if (data && data.save) { continueGame(JSON.parse(data.save)).then(ok => { if (!ok) titleFlow(); }); }
-    else titleFlow();
+    else { const sv = egAutoResume(); if (sv) continueGame(sv).then(ok => { if (!ok) titleFlow(); }); else titleFlow(); }
   };
   if (document.fonts && document.fonts.load) Promise.race([document.fonts.load('16px "DotGothic16"'), new Promise(r => setTimeout(r, 1500))]).then(go, go); else go();
 }

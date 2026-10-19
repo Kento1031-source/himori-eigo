@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="description" content="敵が英語で問いかけるRPG。正解すれば攻撃が決まる。単語・熟語・文法・長文を、冒険しながら練習できます。無料・ブラウザですぐ遊べます。">
 <link rel="canonical" href="https://kento1031-source.github.io/himori-eigo/">
 <meta property="og:type" content="website">
@@ -26,8 +26,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="灯守の旅路">
 <script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
-</head>
-<body>
 <title>灯守の旅路 英語の章</title>
 <meta name="theme-color" content="#0e0c0a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +46,7 @@
   --f-head:"Shippori Mincho B1","Hiragino Mincho ProN","Noto Serif CJK JP","Noto Serif JP","Yu Mincho",serif;
   color-scheme:dark;
 }
-html,body{height:100%}
+html,body{width:100%;height:100%;height:100dvh;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 55%,var(--ink) 100%);color:var(--line);
   font-family:var(--f-pix);overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
 #app{position:fixed;top:env(safe-area-inset-top,0px);bottom:env(safe-area-inset-bottom,0px);left:0;right:0;
@@ -72,7 +70,9 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .win.dimmed{filter:brightness(.62) saturate(.7)}
 .win .ttl{position:absolute;top:calc(var(--u)*-6);left:calc(var(--u)*8);background:var(--win);padding:0 calc(var(--u)*3);
   font-size:calc(var(--u)*7.5);color:var(--lamp);line-height:1.4;border-radius:calc(var(--u)*1)}
-.opt{position:relative;padding-left:calc(var(--u)*10);white-space:nowrap;cursor:pointer;min-height:calc(var(--u)*13)}
+.opt{position:relative;padding-left:calc(var(--u)*10);white-space:nowrap;cursor:pointer;min-height:calc(var(--u)*13);touch-action:manipulation}
+.opt.empty-back{display:flex;flex-direction:column;justify-content:center;white-space:normal;min-height:calc(var(--u)*40);padding:calc(var(--u)*5);text-align:center;color:var(--mist);border:calc(var(--u)*.6) dashed var(--bronze2)}
+.opt.empty-back small{display:block;margin-top:calc(var(--u)*3);font-size:max(12px,calc(var(--u)*6.5));color:var(--lamp)}
 .opt.dis{color:var(--dim)}
 .opt.sel::before{content:"";position:absolute;left:calc(var(--u)*1);top:calc(var(--u)*3.2);border-left:calc(var(--u)*5) solid var(--lamp);
   border-top:calc(var(--u)*3.5) solid transparent;border-bottom:calc(var(--u)*3.5) solid transparent;animation:blink .9s steps(2) infinite}
@@ -173,10 +173,10 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .msg.blog div{white-space:nowrap;overflow:hidden}
 .modal{z-index:10;font-size:calc(var(--u)*8.5)}
 .modal input,.modal textarea{width:100%;box-sizing:border-box;font-family:var(--f-pix);font-size:max(16px,calc(var(--u)*9));background:#070b18;color:var(--line);border:1px solid var(--dim);border-radius:calc(var(--u)*2);padding:calc(var(--u)*3) calc(var(--u)*4);outline:none;resize:none;user-select:text;-webkit-user-select:text}
-.modal textarea{font-size:max(12px,calc(var(--u)*6.5));word-break:break-all}
+.modal textarea{font-size:max(16px,calc(var(--u)*8));word-break:break-all}
 .modal input:focus,.modal textarea:focus{border-color:var(--lamp);box-shadow:0 0 0 2px #ffbf5a44}
 .mbtns{display:flex;gap:calc(var(--u)*4);justify-content:flex-end;margin-top:calc(var(--u)*5)}
-.mbtns button{font-family:var(--f-pix);font-size:max(13px,calc(var(--u)*8));background:var(--lamp);color:#0b1024;border:0;border-radius:calc(var(--u)*2);padding:calc(var(--u)*2.5) calc(var(--u)*6);cursor:pointer}
+.mbtns button{font-family:var(--f-pix);font-size:max(16px,calc(var(--u)*8));background:var(--lamp);color:#0b1024;border:0;border-radius:calc(var(--u)*2);padding:calc(var(--u)*2.5) calc(var(--u)*6);cursor:pointer;touch-action:manipulation}
 .mbtns button:focus-visible{outline:2px solid var(--line);outline-offset:2px}
 .mbtns #mcancel{background:#2a3762;color:var(--line)}
 .endshade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0000 18%,#0b1229a8 40%,#0b1229a8 60%,#0000 82%)}
@@ -294,6 +294,12 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .qz .why{color:#ffd0c4}
 .qz .lk{background:#f2b75a1f;border-radius:calc(var(--u)*1);padding:calc(var(--u)*1.5) calc(var(--u)*3)}
 .qz .qf{flex:none;display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*4)}
+.qz .qcause{flex:none;border-top:calc(var(--u)*.5) solid #b8925a66;padding-top:calc(var(--u)*1.5)}
+.qz .qcl{font-size:max(11px,calc(var(--u)*6.2));color:#f5ead5;margin-bottom:calc(var(--u)*1.2)}
+.qz .qcopts{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*1.2)}
+.qz .qcbtn{min-height:max(30px,calc(var(--u)*10));padding:calc(var(--u)*1) calc(var(--u)*1.5);border:calc(var(--u)*.5) solid var(--bronze2);border-radius:calc(var(--u)*1);background:#ffffff0d;color:var(--line);font-family:var(--f-pix);font-size:max(11px,calc(var(--u)*5.8));line-height:1.2;cursor:pointer}
+.qz .qcbtn.on{border-color:var(--lamp);background:#f2b75a38;color:#fff6e0;box-shadow:0 0 calc(var(--u)*2) #f2b75a55}
+.qz .qctip{min-height:1.35em;margin:calc(var(--u)*1.2) 0 0;color:#cdd9e5;font-size:max(11px,calc(var(--u)*5.8));line-height:1.35}
 .qz .qnext{font-family:var(--f-head);font-weight:800;font-size:max(13px,calc(var(--u)*8.5));background:linear-gradient(#f2c06a,#c88a3a);color:#2a1808;border:0;border-radius:calc(var(--u)*1.5);padding:calc(var(--u)*2.5) calc(var(--u)*7);cursor:pointer;min-height:calc(var(--u)*15)}
 .qz .qnext:focus-visible{outline:2px solid var(--line);outline-offset:2px}
 /* records / lectures viewer */
@@ -325,11 +331,23 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .win.gd small{display:block;margin-top:calc(var(--u)*2);color:var(--mist);font-size:calc(var(--u)*7)}
 .qz .qq small{white-space:nowrap}
 .egv .egc2>span:first-child{white-space:nowrap}
-.qz.rd .qp{min-height:calc(var(--u)*40);max-height:calc(var(--u)*84)}
-.qz.rd .qq{font-size:calc(var(--u)*8.5);line-height:1.3}
-.qz.rd .qos.g1{gap:calc(var(--u)*1.4)}
-.qz.rd .qos.g1 .qo{min-height:calc(var(--u)*11);font-size:calc(var(--u)*7.5);padding-top:calc(var(--u)*1);padding-bottom:calc(var(--u)*1)}
-.qz.rd.res{height:calc(var(--u)*212)}
+.qz.rd{gap:calc(var(--u)*1.7)}
+.qz.rd .qp{min-height:calc(var(--u)*48);max-height:calc(var(--u)*96);font-size:max(15px,calc(var(--u)*8.4));line-height:1.55;padding:calc(var(--u)*2.5) calc(var(--u)*3.5);background:#080b12e8;border-color:#d9aa5c}
+.qz.rd .qptop{position:sticky;top:calc(var(--u)*-2.5);z-index:1;display:flex;align-items:center;gap:calc(var(--u)*2.5);margin:calc(var(--u)*-2.5) calc(var(--u)*-3.5) calc(var(--u)*2.5);padding:calc(var(--u)*2) calc(var(--u)*3.5);background:#15110df5;border-bottom:calc(var(--u)*.5) solid #b8925a;color:var(--mist);font-size:max(12px,calc(var(--u)*6.5));font-family:var(--f-pix)}
+.qz.rd .qptop b{display:inline-block;background:var(--lamp);color:#2a1808;border-radius:calc(var(--u)*1);padding:0 calc(var(--u)*2);text-shadow:none}
+.qz.rd .qptop .qsay{margin-left:auto}
+.qz.rd .qsent{position:relative;display:block;padding-left:calc(var(--u)*10);margin:0 0 calc(var(--u)*1.5);color:#fff8e8}
+.qz.rd .qsent:last-child{margin-bottom:0}
+.qz.rd .qsent i{position:absolute;left:0;top:.15em;width:calc(var(--u)*7);height:calc(var(--u)*7);display:grid;place-items:center;border-radius:50%;background:#31465c;color:#d9efff;font-style:normal;font-size:max(10px,calc(var(--u)*5.2));line-height:1;text-shadow:none}
+.qz.rd .qq{font-size:max(15px,calc(var(--u)*8.8));line-height:1.35}
+.qz.rd .qja,.qz.rd .qreadhint{font-size:max(12px,calc(var(--u)*6.8));line-height:1.45;color:#f5ead5}
+.qz.rd .qja span,.qz.rd .qreadhint span{display:inline-block;margin-right:calc(var(--u)*2);padding:0 calc(var(--u)*1.8);border-radius:calc(var(--u)*.8);background:#42662d;color:#efffdf;font-size:max(11px,calc(var(--u)*5.8));text-shadow:none}
+.qz.rd .qreadhint{color:#cdd9e5}
+.qz.rd .qreadhint span{background:#31465c;color:#d9efff}
+.qz.rd .qos{grid-template-columns:1fr 1fr;gap:calc(var(--u)*1.4)}
+.qz.rd .qo{min-height:max(42px,calc(var(--u)*12));font-size:max(13px,calc(var(--u)*7.2));padding:calc(var(--u)*1.2) calc(var(--u)*2);gap:calc(var(--u)*1.8)}
+.qz.rd .qo .k{width:calc(var(--u)*7);height:calc(var(--u)*7);font-size:max(10px,calc(var(--u)*5.5))}
+.qz.rd.res{height:calc(var(--u)*228)}
 .tjoy{position:absolute;z-index:4;width:calc(var(--u)*44);height:calc(var(--u)*44);margin:calc(var(--u)*-22) 0 0 calc(var(--u)*-22);border-radius:50%;border:2px solid #f2c06a99;background:radial-gradient(#0000 55%,#0005);pointer-events:none}
 .tjoy i{position:absolute;left:50%;top:50%;width:calc(var(--u)*18);height:calc(var(--u)*18);margin:calc(var(--u)*-9) 0 0 calc(var(--u)*-9);border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff0c8,#e0a050 60%,#9a6020);box-shadow:0 0 calc(var(--u)*6) #f2b75a99}
 .ttip{position:absolute;z-index:5;left:50%;bottom:calc(var(--u)*8);transform:translateX(-50%);width:max-content;max-width:94%;font-size:calc(var(--u)*7.5);line-height:1.4;color:#fff6e0;background:#140f0bdd;border:calc(var(--u)*.6) solid #b8925a;border-radius:calc(var(--u)*2);padding:calc(var(--u)*2.5) calc(var(--u)*5);pointer-events:none;animation:ttipin .4s ease-out}
@@ -337,6 +355,7 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 @keyframes ttipin{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
 .objbar{position:absolute;z-index:3;left:calc(var(--u)*4);top:calc(var(--u)*4);max-width:calc(var(--u)*172);font-size:calc(var(--u)*6.6);line-height:1.35;color:#fff6e0;background:#140f0bcc;border:calc(var(--u)*.5) solid #b8925a99;border-radius:calc(var(--u)*1.5);padding:calc(var(--u)*1.6) calc(var(--u)*4) calc(var(--u)*1.6) calc(var(--u)*3);cursor:pointer;text-shadow:0 1px 0 #000}
 .objbar i{font-style:normal;display:inline-block;background:linear-gradient(#f2c06a,#c88a3a);color:#2a1808;border-radius:calc(var(--u)*1);padding:0 calc(var(--u)*1.6);margin-right:calc(var(--u)*2.5);font-weight:700;text-shadow:none}
+.objbar small{display:block;margin-top:calc(var(--u)*1);padding-left:calc(var(--u)*12);color:#f2c06a;font-size:calc(var(--u)*5.8);font-weight:700}
 .chapcard{position:absolute;z-index:6;left:0;right:0;top:32%;text-align:center;pointer-events:none;padding:calc(var(--u)*8) calc(var(--u)*10);background:linear-gradient(90deg,#0000,#0b0a12dd 18%,#0b0a12dd 82%,#0000);animation:chapin .7s ease-out}
 .chapcard .cno{font-family:var(--f-head);font-size:calc(var(--u)*8);letter-spacing:.4em;color:#e0bf84}
 .chapcard .ctt{font-family:var(--f-head);font-weight:800;font-size:calc(var(--u)*20);letter-spacing:.12em;color:#ffdca0;text-shadow:0 0 calc(var(--u)*6) #f2b75a88,0 2px 0 #000}
@@ -346,12 +365,15 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 @keyframes chapin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .egv .stg{background:#f2b75a1f;border-radius:calc(var(--u)*1);padding:calc(var(--u)*2) calc(var(--u)*3)}
 .egv .lb{display:inline-block;font-size:calc(var(--u)*6.5);line-height:1.6;background:var(--bronze2);color:#ffe2a8;border-radius:calc(var(--u)*.8);padding:0 calc(var(--u)*1.8);margin-right:calc(var(--u)*2.5);vertical-align:.1em}
+
 .qz .qrep{font-size:max(10px,calc(var(--u)*5.5));color:var(--mist);text-decoration:underline;text-underline-offset:2px;margin-left:auto;margin-right:calc(var(--u)*4);padding:calc(var(--u)*3) calc(var(--u)*2);white-space:nowrap}
 .qz .qrep:hover,.qz .qrep:focus-visible{color:var(--line)}
 .a2hs{position:absolute;left:50%;bottom:calc(var(--u)*6);transform:translateX(-50%);width:calc(var(--u)*236);box-sizing:border-box;background:rgba(20,16,12,.94);border:1px solid var(--bronze);border-radius:calc(var(--u)*3);color:var(--line);font-size:max(11px,calc(var(--u)*6.2));line-height:1.55;padding:calc(var(--u)*4) calc(var(--u)*6);z-index:40;box-shadow:0 4px 18px rgba(0,0,0,.5)}
 .a2hs b{color:var(--lamp)}
 .a2hs .x{display:block;text-align:right;color:var(--mist);margin-top:calc(var(--u)*2);font-size:max(10px,calc(var(--u)*5.5))}
 </style>
+</head>
+<body>
 <div id="app">
   <div id="screen" aria-label="ゲーム画面">
     <canvas id="cv"></canvas>
@@ -487,6 +509,11 @@ addEventListener('blur', () => In.clear());
 document.addEventListener('visibilitychange', () => { if (document.hidden) In.clear(); try { if (typeof Snd !== 'undefined' && Snd.ctx) { if (document.hidden) Snd.ctx.suspend(); else Snd.ctx.resume(); } } catch (e) { } });
 window.addEventListener('pagehide', () => { try { if (typeof Snd !== 'undefined' && Snd.ctx) Snd.ctx.suspend(); } catch (e) { } });
 window.addEventListener('blur', () => { try { if (typeof Snd !== 'undefined' && Snd.ctx && document.hidden) Snd.ctx.suspend(); } catch (e) { } });
+// Prevent iOS Safari from retaining a zoomed viewport after form input or gestures.
+for (const type of ['gesturestart', 'gesturechange', 'gestureend']) {
+  document.addEventListener(type, e => e.preventDefault(), { passive: false });
+}
+document.addEventListener('focusout', () => requestAnimationFrame(layout));
 function bindPad() {
   const dp = $('#dpad');
   let pid = null;
@@ -3165,7 +3192,18 @@ function mkWin(cls, x, y, w, h, parent) { const e = document.createElement('div'
 function markup(s) { // [y]..[/] color tags
   return esc(s).replace(/\[(y|b|r|g)\]/g, (m, c) => `<span class="${{ y: 'hl', b: 'hb', r: 'hr', g: 'hg' }[c]}">`).replace(/\[\/\]/g, '</span>');
 }
-function fillName(s) { return String(s).replace(/\{name\}/g, (typeof G !== 'undefined' && G && G.party && G.party[0]) ? G.party[0].name : 'ハル'); }
+function friendName(id) {
+  if (typeof G !== 'undefined' && G) {
+    const m = G.party && G.party.find(x => x.id === id);
+    if (m && m.name) return m.name;
+    if (G.names && G.names[id]) return G.names[id];
+  }
+  return (CHARS[id] && CHARS[id].name) || id;
+}
+function fillName(s) {
+  const hero = (typeof G !== 'undefined' && G && G.party && G.party[0]) ? G.party[0].name : '主人公';
+  return String(s).replace(/\{name\}|ミラ|セナ/g, m => m === '{name}' ? hero : friendName(m === 'ミラ' ? 'mira' : 'sena'));
+}
 
 const UI = {
   focus: [], _tap: false, _tapNext: false, _tapEdge: false,
@@ -3205,11 +3243,17 @@ class ListWin {
       const it = this.items[i];
       h += `<div class="opt${i === this.sel ? ' sel' : ''}${it.dis ? ' dis' : ''}" data-i="${i}">${it.html != null ? it.html : esc(it.t)}${it.r != null ? `<span class="r num">${esc(it.r)}</span>` : ''}</div>`;
     }
-    if (!this.items.length && o.empty) h = `<div class="opt dis">${esc(o.empty)}</div>`;
+    if (!this.items.length && o.empty) h = `<div class="opt empty-back" role="button" tabindex="0">${esc(o.empty)}<small>タップして 戻る</small></div>`;
     this.body.innerHTML = h;
     if (this.top > 0) this.body.insertAdjacentHTML('beforeend', '<div class="more up">▲</div>');
     if (end < this.items.length) this.body.insertAdjacentHTML('beforeend', '<div class="more dn">▼</div>');
     for (const e of this.body.querySelectorAll('.opt[data-i]')) e.addEventListener('click', ev => { ev.stopPropagation(); this.click(+e.dataset.i); });
+    const emptyBack = this.body.querySelector('.empty-back');
+    if (emptyBack) {
+      const back = ev => { ev.preventDefault(); ev.stopPropagation(); Snd.fx('cancel'); this.resolve(-1); };
+      emptyBack.addEventListener('click', back);
+      emptyBack.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') back(ev); });
+    }
     if (o.onMove) o.onMove(this.sel, this.items[this.sel]);
   }
   click(i) { if (!this._res) return; if (i !== this.sel) { this.sel = i; this.render(); } this.confirm(); }
@@ -3369,12 +3413,14 @@ function loadSettings() { try { const s = JSON.parse(localStorage.getItem(SET_KE
 function storeSettings(s) { try { localStorage.setItem(SET_KEY, JSON.stringify(s)); } catch (e) { } }
 function applySettings(s) { Snd.vol.bgm = s.bgm; Snd.vol.sfx = s.sfx; Snd.applyVol(); }
 
-function newGame(name) {
+function cleanPlayerName(name, fallback) { return String(name == null ? '' : name).trim().slice(0, 6) || fallback; }
+function newGame(name, names) {
   G = {
     party: [], gold: 0, inv: [], keys: [], flags: {}, chests: {}, map: 'leaf', x: 5, y: 4, dir: 'down',
     time: 0, steps: 0, home: 'leaf', settings: G && G.settings ? G.settings : loadSettings(), clock: false, battles: 0,
+    names: { mira: cleanPlayerName(names && names.mira, CHARS.mira.name), sena: cleanPlayerName(names && names.sena, CHARS.sena.name) },
   };
-  G.party.push(newMember('hero', 1, name || 'ハル'));
+  G.party.push(newMember('hero', 1, name || '主人公'));
   return G;
 }
 function newMember(id, lv, name) {
@@ -3416,7 +3462,7 @@ function healAll() { for (const m of G.party) { const s = mstats(m); m.hp = s.mh
 function alive() { return G.party.filter(m => m.hp > 0); }
 function joinMember(id) {
   const lv = Math.max(CHARS[id].learn ? 1 : 1, G.party[0].lv - 1);
-  const m = newMember(id, Math.max(lv, id === 'sena' ? 10 : 5));
+  const m = newMember(id, Math.max(lv, id === 'sena' ? 10 : 5), G.names && G.names[id]);
   G.party.push(m); return m;
 }
 
@@ -3430,21 +3476,35 @@ function hasKey(id) { return G.keys.includes(id); }
 function serialize() {
   return JSON.stringify({
     v: 1, party: G.party.map(m => ({ id: m.id, name: m.name, lv: m.lv, exp: m.exp, hp: m.hp, mp: m.mp, eq: m.eq, bonus: m.bonus, st: { poison: !!(m.st && m.st.poison) } })),
-    gold: G.gold, inv: G.inv, keys: G.keys, flags: G.flags, chests: G.chests, map: G.map, x: G.x, y: G.y, dir: G.dir, time: G.time, steps: G.steps, home: G.home, battles: G.battles,
+    names: G.names, gold: G.gold, inv: G.inv, keys: G.keys, flags: G.flags, chests: G.chests, map: G.map, x: G.x, y: G.y, dir: G.dir, time: G.time, steps: G.steps, home: G.home, battles: G.battles, savedAt: Date.now(),
   });
 }
 function deserialize(str) {
   const d = typeof str === 'string' ? JSON.parse(str) : str;
   if (!d || d.v !== 1 || !Array.isArray(d.party)) throw new Error('bad save');
   const settings = G && G.settings ? G.settings : loadSettings();
+  const legacyName = id => { const p = d.party.find(x => x.id === id); return p && p.name; };
+  const savedNames = d.names && typeof d.names === 'object' ? d.names : {};
   G = Object.assign({ party: [], gold: 0, inv: [], keys: [], flags: {}, chests: {}, time: 0, steps: 0, home: 'leaf', battles: 0 }, d);
+  G.names = { mira: cleanPlayerName(savedNames.mira || legacyName('mira'), CHARS.mira.name), sena: cleanPlayerName(savedNames.sena || legacyName('sena'), CHARS.sena.name) };
   G.settings = settings; G.clock = false;
   G.party = d.party.map(p => Object.assign({ buff: {}, bonus: {}, st: {} }, p, { buff: {} }));
+  for (const m of G.party) if (G.names[m.id]) m.name = G.names[m.id];
   for (const m of G.party) clampHM(m);
   return G;
 }
 function saveGame() { try { localStorage.setItem(SAVE_KEY, serialize()); return true; } catch (e) { return false; } }
 function readSave() { try { const s = localStorage.getItem(SAVE_KEY); if (!s) return null; const d = JSON.parse(s); return d && d.v === 1 ? d : null; } catch (e) { return null; } }
+let lastAutoSave = 0;
+function autoSaveGame(force) {
+  if (!G || !G.clock || !G.party || !G.party.length || typeof Field === 'undefined' || typeof Scene === 'undefined' || Scene.cur !== Field) return false;
+  if (!force && Date.now() - lastAutoSave < 30000) return false;
+  if (Field.p) { G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir; }
+  const ok = saveGame(); if (ok) lastAutoSave = Date.now(); return ok;
+}
+setInterval(() => autoSaveGame(false), 10000);
+document.addEventListener('visibilitychange', () => { if (document.hidden) autoSaveGame(true); });
+window.addEventListener('pagehide', () => autoSaveGame(true));
 function toCode(str) { const b = new TextEncoder().encode(str); let s = ''; for (const c of b) s += String.fromCharCode(c); return 'HMR1-' + btoa(s); }
 function fromCode(code) { const c = String(code).trim().replace(/^HMR1-/, '').replace(/\s+/g, ''); const s = atob(c); const b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return new TextDecoder().decode(b); }
 
@@ -3874,7 +3934,7 @@ const Battle = {
     }
     await BLog.add(this.boss ? `${this.en[0].E.name}が あらわれた！` : `${intro} あらわれた！`);
     let first = 'normal';
-    if (!this.boss && !this.opt.noAmbush) { const r = Math.random(); if (r < 0.07) first = 'pre'; else if (r < 0.12) first = 'amb'; }
+    if (!this.learningMode() && !this.boss && !this.opt.noAmbush) { const r = Math.random(); if (r < 0.07) first = 'pre'; else if (r < 0.12) first = 'amb'; }
     if (first === 'pre') await BLog.add('しかし 魔物たちは まだ こちらに 気づいていない！');
     if (first === 'amb') await BLog.add('魔物たちは いきなり おそいかかってきた！');
     for (; ;) {
@@ -3900,7 +3960,7 @@ const Battle = {
       // build action queue
       const acts = [];
       for (const c of cmds) acts.push(c);
-      if (first !== 'pre') {
+      if (first !== 'pre' && !this.learningMode()) {
         for (const e of this.liveEn()) {
           let n = 1; if (e.E.apt) { const a = (e.id === 'nox2' && e.hp < e.mhp * 0.3) ? e.E.apt + 0.25 : e.E.apt; n = Math.floor(a) + (chance(a % 1) ? 1 : 0); }
           for (let i = 0; i < n; i++) acts.push({ who: e, enemy: true, spd: e.E.spd * rnd(0.75, 1.25) - i * 6 });
@@ -3921,7 +3981,7 @@ const Battle = {
       // end of turn
       BLog.clear();
       for (const m of alive()) {
-        if (m.st.poison) {
+        if (m.st.poison && !this.learningMode()) {
           const d = Math.max(1, Math.round(mstats(m).mhp / 12)); m.hp = Math.max(0, m.hp - d);
           Snd.fx('poison'); this.status.fx(this.partyIdx(m), 'hurt'); await BLog.add(`${m.name}は どくに おかされている！ ${d}の ダメージ！`, 14);
           if (m.hp <= 0) await BLog.add(`[r]${m.name}は たおれた！[/]`);
@@ -4097,7 +4157,7 @@ const Battle = {
       const q = await this.quiz(m);
       if (!q.ok) { await this.quizFail(m, q, false); return; }
       await this.quizBoost(q);
-      await this.physHit(m, t, q.weak ? 1.5 : 1, mstats(m).elem, null, { crit: q.fast });
+      await this.physHit(m, t, this.answerBoost(q), mstats(m).elem, null, { crit: q.fast, sure: true });
       return;
     }
     if (a.cmd === 'item') {
@@ -4119,12 +4179,12 @@ const Battle = {
       const q = off ? await this.quiz(m) : { ok: true, skip: true };
       if (!q.ok) { m.mp += s.mp; this.status.refresh(idx); await this.quizFail(m, q, true); return; }
       if (off) await this.quizBoost(q);
-      const boost = q.weak ? 1.5 : 1;
+      const boost = this.answerBoost(q);
       const st = mstats(m);
       if (s.kind === 'phys') {
         const tg = a.tgt === 'all' ? this.liveEn() : [this.retarget(a.tgt)].filter(Boolean);
         if (s.fx === 'dawn') await this.fxDawn();
-        for (const t of tg) { for (let h = 0; h < (s.hits || 1); h++) { if (t.dead) break; await this.physHit(m, t, s.mult * boost, s.elem || st.elem, s.fx === 'light' ? 'light' : null, { crit: q.fast }); } }
+        for (const t of tg) { for (let h = 0; h < (s.hits || 1); h++) { if (t.dead) break; await this.physHit(m, t, s.mult * boost, s.elem || st.elem, s.fx === 'light' ? 'light' : null, { crit: q.fast, sure: true }); } }
         return;
       }
       if (s.kind === 'mag') {
@@ -4162,7 +4222,26 @@ const Battle = {
       }
     }
   },
+  learningMode() { return !!this.aiLearning || (!TURBO && !this.auto); },
+  answerPenalty(m, q) {
+    const foes = this.liveEn();
+    const foe = foes.slice().sort((a, b) => (b.E.atk || 0) - (a.E.atk || 0))[0] || null;
+    const attack = foe ? (foe.E.atk || 10) : 10;
+    const strength = clamp((attack - 10) / 145, 0, 1);
+    const boss = foes.some(e => e.E.boss);
+    const group = Math.min(0.06, Math.max(0, foes.length - 1) * 0.02);
+    const timeout = q && q.timeout ? 0.04 : 0;
+    const rate = clamp(0.10 + strength * 0.12 + (boss ? 0.08 : 0) + group + timeout, 0.10, 0.35);
+    return { foe, boss, rate, damage: Math.max(1, Math.round(mstats(m).mhp * rate)) };
+  },
   async quiz(m) {
+    if (this.aiLearning) {
+      if (!Eigo.S) Eigo.load();
+      const Q = Eigo.choose();
+      this.aiAnswers = (this.aiAnswers || 0) + 1;
+      this.aiCats = this.aiCats || {}; this.aiCats[Q.cat] = (this.aiCats[Q.cat] || 0) + 1;
+      return { ok: true, fast: true, weak: !!Q.weak, cat: Q.cat, ai: true };
+    }
     if (TURBO || this.auto || !Eigo.needed(m)) return { ok: true, fast: false, weak: false, skip: true };
     if (BLog.el) BLog.el.hidden = true;
     let r;
@@ -4170,16 +4249,23 @@ const Battle = {
     this.status.refresh();
     return r;
   },
+  answerBoost(q) {
+    const finalReading = q && q.cat === 'reading' && this.en.some(e => e.id === 'nox1' || e.id === 'nox2');
+    return (q && q.weak ? 1.5 : 1) * (finalReading ? 7 : 1);
+  },
   async quizBoost(q) {
     if (!q || q.skip) return;
+    if (q.cat === 'reading' && this.en.some(e => e.id === 'nox1' || e.id === 'nox2')) await BLog.add('[y]長文を読み解いた！ 灯が大きな一撃に変わる！[/]', 4);
     if (q.fast) await BLog.add('[y]すばやい 正解！ 言葉が 光を 放った！[/]', 4);
     if (q.weak) await BLog.add('[g]苦手を 乗り越えた！ 威力が 上がった！[/]', 4);
   },
   async quizFail(m, q, spell) {
     Snd.fx('debuff');
     await BLog.add(q.timeout ? '時間切れ！ 言葉が 間に合わなかった……' : spell ? '言葉が 乱れ、 呪文は 不発に 終わった！' : '言葉が 乱れ、 攻撃は 空を 切った！', 6);
-    await BLog.add('灯の 力が 跳ね返る！', 2);
-    await this.hurtMember(m, Math.max(1, Math.round(mstats(m).mhp * 0.12)));
+    const p = this.answerPenalty(m, q);
+    const name = p.foe ? p.foe.name : '魔物';
+    await BLog.add(p.boss ? `[r]強敵 ${name}の 反撃！[/]` : `${name}の 反撃！`, 2);
+    await this.hurtMember(m, p.damage);
   },
   async applyItem(it, t) {
     if (it.use === 'heal') { if (t.hp <= 0) { await BLog.add(`しかし ${t.name}は たおれている！`); return; } await this.healMember(t, it.power); }
@@ -4202,7 +4288,7 @@ const Battle = {
   async physHit(m, t, mult, elem, fx, o) {
     const st = mstats(m);
     Snd.fx('swing');
-    if (t.E.evade && chance(t.E.evade)) { await this.fxSlash(t, true); Snd.fx('miss'); const [x, y] = this.enemyCenter(t); pop(x, t.y + 8, 'MISS', 'miss'); await BLog.add(`ミス！ ${t.name}は ひらりと かわした！`); return; }
+    if (!(o && o.sure) && t.E.evade && chance(t.E.evade)) { await this.fxSlash(t, true); Snd.fx('miss'); const [x, y] = this.enemyCenter(t); pop(x, t.y + 8, 'MISS', 'miss'); await BLog.add(`ミス！ ${t.name}は ひらりと かわした！`); return; }
     const atk = st.atk * (m.buff.atk ? 1.3 : 1), def = t.E.def * (t.buff.def ? 1.5 : 1);
     const crit = !!(o && o.crit) || chance(1 / 18);
     let dmg = crit ? Math.round(atk * 0.6 * mult * rnd(0.95, 1.05)) : physDmg(atk, def, mult);
@@ -4421,7 +4507,7 @@ const EG_CATS = { vocab: { c: '単', n: '単語' }, grammar: { c: '文', n: '文
 const EG_MAIL = 'kento.nocloud1031@gmail.com';
 // mailto link for reporting a mistake in one question (no personal data, only the question)
 function egReportUrl(Q, C) {
-  const tx = h => String(h || '').replace(/<span class="qb"><\/span>|<i class="qb"><\/i>|<b class="qb"><\/b>/g, ' ____ ').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim();
+  const tx = h => String(h || '').replace(/<span class="qb"><\/span>/g, ' ____ ').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim();
   const id = Q.id || (Q.key + (Q.dir != null ? '#' + Q.dir : ''));
   const lines = ['【問題ID】' + id, '【分野】' + EG_CATS[Q.cat].n, '【問題】' + (Q.qtext || tx(Q.prompt) + (Q.sub ? ' ' + tx(Q.sub) : '')).slice(0, 300),
     '【選択肢】' + Q.opts.map((o, i) => (i + 1) + '. ' + o.t).join(' / '), '【正解とされた答え】' + (Q.ans + 1) + '. ' + Q.opts[Q.ans].t,
@@ -5528,6 +5614,13 @@ EG_QS.forEach(q => EG_QBY[q.id] = q);
 
 const EG_POS = { v: '動詞', n: '名詞', a: '形容詞', d: '副詞', i: '熟語' };
 const EG_TIER = { 1: '中学', 2: '高校基礎', 3: '高校発展', 4: '仕事', 5: '上級' };
+const EG_CAUSES = [
+  { id: 'meaning', n: '意味を知らない', tip: '正解の語句を、意味と一緒に声に出してから次へ進みましょう。' },
+  { id: 'rule', n: '文法が不明', tip: '解説の「次はここを見る」を確認し、戦闘後に対応する講義を開きましょう。' },
+  { id: 'reading', n: '読み違い', tip: '質問が何を聞いているかを日本語で確認し、根拠になる一文を探しましょう。' },
+  { id: 'time', n: '時間不足', tip: '先に質問と選択肢を見て、本文から同じ言葉や言いかえを探しましょう。' },
+  { id: 'careless', n: 'うっかり', tip: '決定する前に、選んだ番号と質問の条件をもう一度だけ確認しましょう。' },
+];
 const EG_WORDS = `1|v|arrive|到着する
 1|v|borrow|借りる
 1|v|lend|貸す
@@ -15957,15 +16050,25 @@ welfare|well-being
 wholesale|wholesaler
 `.trim().split('\n').forEach(l => { const [a, b] = l.split('|'); if (a && b) EG_SYN.push([a, b]); });
 const egDayKey = (t = Date.now()) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const egPassageHtml = text => {
+  let sentences = [];
+  try {
+    sentences = [...new Intl.Segmenter('en', { granularity: 'sentence' }).segment(String(text))].map(x => x.segment.trim()).filter(Boolean);
+  } catch (e) {
+    sentences = (String(text).match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(x => x.trim()).filter(Boolean);
+  }
+  if (!sentences.length) sentences = [String(text)];
+  return sentences.map((s, i) => `<span class="qsent"><i>${i + 1}</i>${esc(s).replace('____', '<span class="qb"></span>')}</span>`).join('');
+};
 
 const Eigo = {
   KEY: 'himori_eigo_v1', S: null, sw: [], count: 0, recent: [], recentQ: [], lastDir: {}, lastId: {}, active: null, cur: null,
-  def() { return { v: 1, set: { time: 0, cat: 'all', who: 0, auto: 1, goal: null, voice: 1 }, rev: {}, miss: {}, mast: {}, daily: {}, tot: {}, n: 0 }; },
+  def() { return { v: 1, set: { time: 0, cat: 'all', who: 0, auto: 1, goal: null, voice: 1 }, rev: {}, miss: {}, mast: {}, cause: {}, daily: {}, tot: {}, pace: { sec: 0, q: 0 }, n: 0 }; },
   load(src) {
     let o = src || null; if (!o) try { o = JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch (e) { o = null; }
     const d = this.def();
     if (o && o.v === 1) {
-      for (const k of ['rev', 'miss', 'mast', 'daily', 'tot']) if (o[k] && typeof o[k] === 'object' && !Array.isArray(o[k])) d[k] = o[k];
+      for (const k of ['rev', 'miss', 'mast', 'cause', 'daily', 'tot', 'pace']) if (o[k] && typeof o[k] === 'object' && !Array.isArray(o[k])) d[k] = o[k];
       d.n = Math.max(0, +o.n || 0);
       const s = o.set || {};
       d.set.time = [0, 1, 2].includes(s.time) ? s.time : 0;
@@ -15977,6 +16080,10 @@ const Eigo = {
     }
     for (const k in d.rev) if (!this.keyOk(k) || !d.rev[k] || typeof d.rev[k].due !== 'number') delete d.rev[k];
     for (const k of ['miss', 'mast']) for (const key in d[k]) if (!this.keyOk(key) || typeof d[k][key] !== 'number') delete d[k][key];
+    for (const k in d.cause) {
+      const c = d.cause[k];
+      if (!this.keyOk(k) || !c || typeof c !== 'object' || !EG_CAUSES.some(x => x.id === c.last)) delete d.cause[k];
+    }
     this.S = d; return d;
   },
   save() {
@@ -15987,6 +16094,62 @@ const Eigo = {
   keyOk(k) { return typeof k === 'string' && (EG_IBY[k] ? true : !!EG_KN[k]); },
   catOf(k) { return k.startsWith('w:') ? 'vocab' : k.startsWith('i:') ? 'idiom' : EG_KN[k].cat; },
   goal() { return EG_GOALS.find(g => g.id === (this.S && this.S.set.goal)) || EG_GOALS[1]; },
+  progressCat() {
+    if (!this.S) this.load();
+    if (!G || !G.flags) return 'vocab';
+    if (!G.flags.flameG) return 'vocab';
+    if (!G.flags.flameB) return 'idiom';
+    return 'grammar';
+  },
+  storyCat(inBattle = false) {
+    if (!this.S) this.load();
+    if (!inBattle || typeof Battle === 'undefined' || !Battle.active) return this.S.set.cat;
+    const ids = Battle.en.map(e => e.id);
+    if (ids.includes('nox1') || ids.includes('nox2')) return 'reading';
+    return this.progressCat();
+  },
+  stageText(cat) { return { vocab: '単語の章', idiom: '熟語の章', grammar: '文法の章', reading: '長文の最終戦' }[cat] || '英語の旅'; },
+  goalCount() {
+    const p = this.S.pace || { sec: 0, q: 0 };
+    const answerSec = p.q ? p.sec / p.q : 50;
+    return clamp(Math.round(12 * 60 / Math.max(50, answerSec + 25)), 6, 12);
+  },
+  today() {
+    const k = egDayKey(), old = this.S.daily[k];
+    const d = old || { a: 0, c: 0, sec: 0, goal: this.goalCount() };
+    if (!Number.isFinite(d.sec)) d.sec = 0;
+    if (!Number.isFinite(d.goal) || d.goal < 1) d.goal = this.goalCount();
+    return d;
+  },
+  dailyShort() {
+    if (!this.S) this.load();
+    const d = this.today(), done = d.a >= d.goal;
+    return done ? `今日のノルマ達成 ${d.a}/${d.goal}問` : `今日 ${d.a}/${d.goal}問・約12分`;
+  },
+  dailyHtml() {
+    const d = this.today(), cat = this.progressCat(), pct = Math.min(100, Math.round(d.a / d.goal * 100));
+    const min = Math.floor(d.sec / 60), sec = Math.round(d.sec % 60);
+    return `<p class="stg"><b>${d.a >= d.goal ? '今日のノルマ達成！' : '今日のノルマ'}</b><br>${esc(this.stageText(cat))}を ${d.goal}問（目安 約12分）</p>` +
+      `<div class="egc2"><span>進み具合</span><div class="bar"><i style="width:${pct}%"></i></div><span class="num">${d.a}/${d.goal}</span></div>` +
+      `<p class="egm">問題画面で学んだ時間：${min}分${sec}秒<br>解く速さに合わせて、翌日の問題数を6〜12問の間で調整します。ノルマ達成後も、そのまま冒険を続けられます。</p>` +
+      `<div class="egh">物語と出題の順番</div><p>翠の灯まで：<b>単語</b><br>蒼の灯まで：<b>熟語</b><br>紅の灯から夜の塔：<b>文法</b><br>最後のボス：<b>長文</b></p>`;
+  },
+  addStudyTime(seconds) {
+    const d = this.today(), k = egDayKey();
+    this.S.daily[k] = d;
+    const s = clamp(Math.round(seconds || 0), 1, 180);
+    d.sec += s;
+    this.S.pace.sec = Math.max(0, +this.S.pace.sec || 0) + s;
+    this.S.pace.q = Math.max(0, +this.S.pace.q || 0) + 1;
+    this.save();
+  },
+  readingCap(g) {
+    const cap = { g1: 1, g2: 2, g3: 2, g4: 3, g5: 3, g6: 4 }[g.id] || 2;
+    const t = this.S && this.S.tot && this.S.tot.reading;
+    if (!t || t.a < 8) return Math.min(cap, 2);
+    if (t.c / Math.max(1, t.a) < 0.7) return Math.min(cap, 2);
+    return cap;
+  },
   needed(m) { if (!this.S) this.load(); return this.S.set.who === 1 ? m.id === 'hero' : true; },
   shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; },
 
@@ -16064,7 +16227,7 @@ const Eigo = {
     return pick(unl.length && chance(0.85) ? unl : pool);
   },
   choose() {
-    const S = this.S, now = Date.now(), cat = S.set.cat, g = this.goal();
+    const S = this.S, now = Date.now(), cat = this.storyCat(true), g = this.goal();
     const catOk = k => cat === 'all' || this.catOf(k) === cat;
     const si = this.sw.findIndex(w => this.count >= w.at && catOk(w.k));
     if (si >= 0) { const w = this.sw.splice(si, 1)[0]; const q = this.build(w.k); if (q) return Object.assign(q, { weak: true, src: 'sw' }); }
@@ -16072,12 +16235,16 @@ const Eigo = {
     if (due.length && chance(0.4)) { const q = this.build(pick(due)); if (q) return Object.assign(q, { weak: true, src: 'due' }); }
     const c = cat === 'all' ? wpick([[g.cat[0], 'vocab'], [g.cat[1], 'grammar'], [g.cat[2], 'idiom'], [g.cat[3], 'reading']].filter(e => e[0] > 0)) : cat;
     if (c === 'vocab' || (c === 'idiom' && chance(0.65))) return Object.assign(this.fromItem(this.pickItem(c === 'vocab' ? 'w' : 'i')), { weak: false, src: 'new' });
-    let pool = EG_QS.filter(q => q.cat === c && !this.recentQ.includes(q.id) && g.d[q.d - 1] > 0); if (!pool.length) pool = EG_QS.filter(q => q.cat === c);
+    const rcap = c === 'reading' ? this.readingCap(g) : 4;
+    const allowed = q => q.cat === c && g.d[q.d - 1] > 0 && (c !== 'reading' || q.d <= rcap);
+    let pool = EG_QS.filter(q => allowed(q) && !this.recentQ.includes(q.id));
+    if (!pool.length) pool = EG_QS.filter(allowed);
+    if (!pool.length) pool = EG_QS.filter(q => q.cat === c);
     return Object.assign(this.fromCurated(wpick(pool.map(q => [g.d[q.d - 1] || 0.2, q]))), { weak: false, src: 'new' });
   },
   record(Q, ok) {
     const S = this.S, now = Date.now(), d = egDayKey();
-    const day = S.daily[d] || (S.daily[d] = { a: 0, c: 0 }); day.a++; if (ok) day.c++;
+    const day = S.daily[d] || (S.daily[d] = { a: 0, c: 0, sec: 0, goal: this.goalCount() }); day.a++; if (ok) day.c++;
     const t = S.tot[Q.cat] || (S.tot[Q.cat] = { a: 0, c: 0 }); t.a++; if (ok) t.c++;
     S.n++;
     S.mast[Q.key] = ok ? Math.min(9, (S.mast[Q.key] || 0) + 1) : 0;
@@ -16088,6 +16255,18 @@ const Eigo = {
       const r = S.rev[Q.key]; r.st++; if (r.st >= 3) delete S.rev[Q.key]; else r.due = now + [1, 3, 7][r.st] * EG_DAY;
     }
     this.save();
+  },
+  noteCause(k, id, previous) {
+    if (!this.keyOk(k) || !EG_CAUSES.some(x => x.id === id)) return;
+    const c = this.S.cause[k] || (this.S.cause[k] = { last: '', n: {}, at: 0 });
+    if (!c.n || typeof c.n !== 'object') c.n = {};
+    if (previous && previous !== id && c.n[previous]) c.n[previous]--;
+    if (previous !== id) c.n[id] = (c.n[id] || 0) + 1;
+    c.last = id; c.at = Date.now(); this.save();
+  },
+  causeName(k) {
+    const c = this.S.cause[k], d = c && EG_CAUSES.find(x => x.id === c.last);
+    return d ? d.n : '';
   },
   progress(g) {
     g = g || this.goal();
@@ -16108,26 +16287,29 @@ const Eigo = {
     if (Q.dir != null) this.lastDir[Q.key] = Q.dir;
     const S = this.S, base = [20, 40, 0][S.set.time] * 60 * (Q.passage ? Math.max(2.5, Q.passage.split(' ').length / 45) : Q.cat === 'reading' ? 2.5 : 1), lim = base ? base + 5 * 60 : 0;
     const voice = this.canSpeak() && S.set.voice;
-    const rd = !!Q.passage, win = mkWin('qz' + (rd ? ' rd' : ''), 6, rd ? 6 : 46, 244); win.style.maxHeight = px(rd ? 212 : 172);
+    const rd = !!Q.passage, win = mkWin('qz' + (rd ? ' rd' : ''), 6, rd ? 4 : 46, 244); win.style.maxHeight = px(rd ? 228 : 172);
     const stars = '★'.repeat(Q.d) + '☆'.repeat(Math.max(0, 3 - Q.d));
-    const sayBtn = (lab) => voice ? `<button type="button" class="qsay" aria-label="英語の発音を聞く">${lab}</button>` : '';
+    const sayBtn = (lab, target = 'answer') => voice ? `<button type="button" class="qsay" data-say="${target}" aria-label="英語の発音を聞く">${lab}</button>` : '';
     win.innerHTML =
       `<div class="qh"><span class="chip">${EG_CATS[Q.cat].c}・${EG_CATS[Q.cat].n}</span><span class="st" aria-label="難しさ${Q.d}">${stars}</span>${Q.weak ? '<span class="wk">苦手</span>' : ''}` +
       `<span class="who">${esc(o.who ? o.who.name : '')}の言葉</span><span class="tm num">${lim ? Math.ceil(lim / 60) + '秒' : ''}</span></div>` +
       (lim ? '<div class="qbar"><i></i></div>' : '') +
-      (Q.passage ? `<div class="qp" lang="en">${esc(Q.passage).replace('____', '<span class="qb"></span>').replace(/([.?!]) (?=[A-Z][a-z]+(?: [A-Z][a-z]+)? \(\d{1,2}:\d{2} [ap]\.m\.\):)/g, '$1<br>')}</div>` : '') +
+      (Q.passage ? `<div class="qp"><div class="qptop"><b>本文</b><span>一文ずつ読もう</span>${sayBtn('本文を聞く', 'passage')}</div><div class="qbody" lang="en">${egPassageHtml(Q.passage)}</div></div>` : '') +
       `<div class="qq${Q.dir === 1 ? ' ja' : ''}">${Q.prompt}${Q.sub ? ` <small>${Q.sub}</small>` : ''}${Q.dir === 0 ? sayBtn('発音') : ''}</div>` +
-      `<div class="qos${Q.long ? ' g1' : ''}">${Q.opts.map((op, i) => `<div class="qo" data-i="${i}" role="button" aria-label="${i + 1}番 ${esc(op.t)}"><span class="k">${i + 1}</span><span class="w"${op.en ? ' lang="en"' : ''}>${esc(op.t)}</span></div>`).join('')}</div>` +
+      (Q.passage && Q.ja ? `<div class="qja"><span>質問の意味</span>${esc(Q.ja)}</div>` : '') +
+      (Q.passage && Q.lk ? `<div class="qreadhint"><span>探し方</span>${esc(Q.lk)}</div>` : '') +
+      `<div class="qos${Q.long && !rd ? ' g1' : ''}">${Q.opts.map((op, i) => `<div class="qo" data-i="${i}" role="button" aria-label="${i + 1}番 ${esc(op.t)}"><span class="k">${i + 1}</span><span class="w"${op.en ? ' lang="en"' : ''}>${esc(op.t)}</span></div>`).join('')}</div>` +
       (S.n < 3 && !Q.passage ? '<div class="qhint">正解すると攻撃が決まり、間違えると反動でダメージを受けます。<br>（↑↓←→と決定ボタン、数字キー、タップで答えられます）</div>' : '');
-    const bindSay = () => { const b = win.querySelector('.qsay'); if (b) b.addEventListener('click', ev => { ev.stopPropagation(); this.speak(Q.say); }); };
+    const bindSay = () => win.querySelectorAll('.qsay').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); this.speak(b.dataset.say === 'passage' ? Q.passage : Q.say); }));
     bindSay();
     return new Promise(res => {
+      const startedAt = Date.now();
       let sel = 0, el = 0, phase = 'q', ansAt = 0, hold = false, result = null;
-      const ops = [...win.querySelectorAll('.qo')], per = Q.long ? 1 : 2;
+      const ops = [...win.querySelectorAll('.qo')], per = Q.long && !rd ? 1 : 2;
       const bar = win.querySelector('.qbar'), barI = bar && bar.querySelector('i'), tm = win.querySelector('.tm');
       const drawSel = () => ops.forEach((e, i) => e.classList.toggle('sel', i === sel));
       drawSel();
-      const finish = () => { if (phase === 'done') return; phase = 'done'; UI.pop(h); win.remove(); this.active = null; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { } res(result); };
+      const finish = () => { if (phase === 'done') return; phase = 'done'; if (result) this.addStudyTime((Date.now() - startedAt) / 1000); UI.pop(h); win.remove(); this.active = null; try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) { } res(result); };
       const decide = i => {
         if (phase !== 'q') return;
         phase = 'r'; ansAt = el;
@@ -16153,8 +16335,18 @@ const Eigo = {
           (Q.ja ? `<p><span class="lb">${Q.passage ? '質問の意味' : '文の意味'}</span>${esc(Q.ja)}</p>` : '') +
           (Q.ev ? `<p><span class="lb">根拠</span><span lang="en">${esc(Q.ev).replace('____', '<mark>' + esc(Q.opts[Q.ans].t) + '</mark>')}</span></p>` : '') +
           `<p class="lk"><span class="lb">次はここを見る</span>${esc(Q.lk)}</p></div>` +
+          (!ok ? `<div class="qcause"><div class="qcl">分からなかった原因を1つ選ぶ</div><div class="qcopts">${EG_CAUSES.map(c => `<button type="button" class="qcbtn" data-cause="${c.id}" aria-pressed="false">${c.n}</button>`).join('')}</div><p class="qctip">選ぶと、次にやることを表示します。</p></div>` : '') +
           `<div class="qf"><span class="qhint">↑↓でスクロール${ok && S.set.auto ? '・Bで一時停止' : ''}</span><a class="qrep" href="${egReportUrl(Q, C)}" target="_blank" rel="noopener">誤りを報告</a><button type="button" class="qnext">次へ ▶</button></div>`;
         bindSay();
+        let selectedCause = '';
+        win.querySelectorAll('.qcbtn').forEach(b => b.addEventListener('click', ev => {
+          ev.stopPropagation();
+          const id = b.dataset.cause, c = EG_CAUSES.find(x => x.id === id); if (!c) return;
+          this.noteCause(Q.key, id, selectedCause); selectedCause = id;
+          win.querySelectorAll('.qcbtn').forEach(x => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+          const tip = win.querySelector('.qctip'); if (tip) tip.textContent = c.tip;
+          Snd.fx('cur'); hold = true;
+        }));
         win.querySelector('.qnext').addEventListener('click', ev => { ev.stopPropagation(); if (el - ansAt > 8) { Snd.fx('cur'); finish(); } });
         win.querySelector('.qr').addEventListener('pointerdown', () => { hold = true; });
         win.querySelector('.qrep').addEventListener('click', ev => { ev.stopPropagation(); hold = true; });
@@ -16243,7 +16435,7 @@ const Eigo = {
     const mx = Math.max(5, ...days.map(d => d.a));
     const row = (k, v) => `<div class="k"><b>${k}</b><span class="num">${v}</span></div>`;
     const meter = (lab, a, b) => `<div class="egc2"><span>${lab}</span><div class="bar"><i style="width:${b ? Math.round(a / b * 100) : 0}%"></i></div><span class="num">${a}/${b}</span></div>`;
-    return `<div class="egh" style="margin-top:0">目標：${esc(g.n)}</div>${meter('単語', p.w, p.wt)}${meter('熟語', p.i, p.it)}${meter('文法・読解', p.k, p.kt)}<p class="egm">2回続けて正解した言葉を「覚えた」と数えます。間違えると数え直しになります。</p>` +
+    return this.dailyHtml() + `<div class="egh">学習目標：${esc(g.n)}</div>${meter('単語', p.w, p.wt)}${meter('熟語', p.i, p.it)}${meter('文法・読解', p.k, p.kt)}<p class="egm">2回続けて正解した言葉を「覚えた」と数えます。間違えると数え直しになります。</p>` +
       `<div class="eg2">${row('今日の回答', today.a + '問')}${row('今日の正解', today.c + '問（' + pct(today.c, today.a) + '）')}${row('累計の回答', all.a + '問')}${row('累計の正答率', pct(all.c, all.a))}${row('連続学習', this.streak() + '日')}${row('復習待ち', dueN + '件（全' + Object.keys(S.rev).length + '件）')}</div>` +
       `<div class="egh">直近7日の回答数</div><div class="egw">${days.map(d => `<div><span class="num">${d.a}</span><i style="height:${Math.max(2, Math.round(d.a / mx * 34))}px"></i><small>${d.lab}</small></div>`).join('')}</div>` +
       `<div class="egh">分野ごとの正答率</div>${Object.keys(EG_CATS).map(c => { const t = S.tot[c] || { a: 0, c: 0 }; return `<div class="egc2"><span>${EG_CATS[c].n}</span><div class="bar"><i style="width:${t.a ? Math.round(t.c / t.a * 100) : 0}%"></i></div><span class="num">${pct(t.c, t.a)}</span></div>`; }).join('')}` +
@@ -16251,12 +16443,14 @@ const Eigo = {
   },
   lectureHtml(k) {
     const K = EG_KN[k], n = EG_QS.filter(q => q.k === k).length, m = this.S.miss[k] || 0;
-    return `<p class="egl">${esc(K.l)}</p><p class="egm">この知識の問題：${n}問${m ? `　これまでのミス：${m}回` : ''}${this.S.rev[k] ? '　（復習待ち）' : ''}</p>`;
+    const cause = this.causeName(k);
+    return `<p class="egl">${esc(K.l)}</p><p class="egm">この知識の問題：${n}問${m ? `　これまでのミス：${m}回` : ''}${cause ? `　最近の原因：${esc(cause)}` : ''}${this.S.rev[k] ? '　（復習待ち）' : ''}</p>`;
   },
   itemHtml(w) {
     const m = this.S.miss[w.key] || 0, r = this.S.rev[w.key], ms = this.S.mast[w.key] || 0;
+    const cause = this.causeName(w.key);
     return `<p class="egl"><span lang="en" style="font-size:${px(13)};font-weight:700">${esc(w.en)}</span>　<span class="egm">${esc(EG_POS[w.pos])}・${EG_TIER[w.lv]}</span>${this.canSpeak() ? ' <button type="button" class="qsay">発音</button>' : ''}</p><p class="egl">意味：${esc(w.ja)}</p>` +
-      `<p class="egm">${ms >= 2 ? '覚えた言葉' : 'まだ覚えていない'}　これまでのミス：${m}回${r ? '　次の復習：' + (r.due <= Date.now() ? '今日' : Math.ceil((r.due - Date.now()) / EG_DAY) + '日後') : ''}</p>`;
+      `<p class="egm">${ms >= 2 ? '覚えた言葉' : 'まだ覚えていない'}　これまでのミス：${m}回${cause ? `　最近の原因：${esc(cause)}` : ''}${r ? '　次の復習：' + (r.due <= Date.now() ? '今日' : Math.ceil((r.due - Date.now()) / EG_DAY) + '日後') : ''}</p>`;
   },
   showItem(w) { return this.view(this.itemHtml(w), w.kind === 'i' ? '熟語' : '単語', wv => { const b = wv.querySelector('.qsay'); if (b) b.addEventListener('pointerdown', ev => { ev.stopPropagation(); this.speak(w.en); }); }); },
   async lectures() {
@@ -16303,23 +16497,24 @@ const Eigo = {
       this.save(); Snd.fx('cur'); lw.setItems(items());
     };
     const desc = mkWin('desc', 82, 140, 168, 78);
-    desc.innerHTML = '←→で変更します。長文の回答時間は2.5倍になります。<br><small>「主人公だけ」にすると、仲間の攻撃では問題が出ません。発音はお使いの端末の音声で読み上げます。</small>';
+    desc.innerHTML = '←→で変更します。物語の戦闘は「単語→熟語→文法→最後のボスは長文」の順で固定されます。<br><small>出題設定は練習用です。「主人公だけ」にすると、仲間の攻撃では問題が出ません。</small>';
     const lw = new ListWin({ x: 82, y: 6, w: 168, cls: 'sett', title: '英語の設定', items: items(), lr: d => change(lw.sel, d) });
     for (; ;) { const r = await lw.choose(); if (r < 0 || r === 5) break; change(r, 1); }
     lw.close(); desc.remove();
   },
   async menu() {
     if (!this.S) this.load();
-    const lw = new ListWin({ x: 82, y: 6, w: 104, title: '英語', items: ['目標', '記録', '覚えた言葉', '苦手', '講義', '設定'].map(t => ({ t })) });
+    const lw = new ListWin({ x: 82, y: 6, w: 116, title: '英語', items: ['今日のノルマ', '目標', '記録', '覚えた言葉', '苦手', '講義', '設定'].map(t => ({ t })) });
     for (; ;) {
       const r = await lw.choose(); if (r < 0) break;
       lw.el.classList.add('dimmed');
-      if (r === 0) { lw.el.hidden = true; await this.chooseGoal(false); lw.el.hidden = false; }
-      else if (r === 1) await this.view(this.recordHtml(), '英語の記録');
-      else if (r === 2) { lw.el.hidden = true; await this.learned(); lw.el.hidden = false; }
-      else if (r === 3) { lw.el.hidden = true; await this.weakList(); lw.el.hidden = false; }
-      else if (r === 4) { lw.el.hidden = true; await this.lectures(); lw.el.hidden = false; }
-      else if (r === 5) await this.settings();
+      if (r === 0) await this.view(this.dailyHtml(), '今日のノルマ');
+      else if (r === 1) { lw.el.hidden = true; await this.chooseGoal(false); lw.el.hidden = false; }
+      else if (r === 2) await this.view(this.recordHtml(), '英語の記録');
+      else if (r === 3) { lw.el.hidden = true; await this.learned(); lw.el.hidden = false; }
+      else if (r === 4) { lw.el.hidden = true; await this.weakList(); lw.el.hidden = false; }
+      else if (r === 5) { lw.el.hidden = true; await this.lectures(); lw.el.hidden = false; }
+      else if (r === 6) await this.settings();
       lw.el.classList.remove('dimmed');
     }
     lw.close();
@@ -16467,6 +16662,7 @@ Object.assign(Field, {
 })();
 // first visit on a phone: a short hint about finger controls
 setInterval(() => {
+  if (Field.tip && !fieldIdle()) { Field.tip.remove(); Field.tip = null; }
   if (!IS_TOUCH || Field.tipShown || !fieldIdle()) return;
   Field.tipShown = true;
   const t = document.createElement('div'); t.className = 'ttip';
@@ -16480,9 +16676,9 @@ Eigo.aboutHtml = () => [
   '<p class="egh">学習について</p>',
   '<p>このアプリは英語を「読む力」（単語・熟語・文法・長文）の練習の場です。聞く・話す・書く練習は含みません。学習の成果や、試験の点数・合否を保証するものではありません。問題や解説は確認を重ねていますが、誤りが残っている可能性があります。</p>',
   '<p class="egh">誤りの報告・お問い合わせ</p>',
-  '<p>問題・解説の誤りや、お気づきの点は、次のアドレスまでお知らせください。問題の解説画面の「誤りを報告」を押すと、問題の番号が入ったメールを作れます。<br><span lang="en">kento.nocloud1031@gmail.com</span></p>',
+  '<p>問題・解説の誤りや、お気づきの点は、次のアドレスまでお知らせください。問題の解説画面の「誤りを報告」を押すと、問題の番号が入ったメールを作れます（送るかどうかはご自身で決められます）。<br><span lang="en">kento.nocloud1031@gmail.com</span></p>',
   '<p class="egh">データの保存について</p>',
-  '<p>冒険の記録は、フィールドを歩いているあいだ自動で保存され、次に開いたときは前回の続きから始まります。タイトル画面へは、メニューの「セーブ」→「タイトルへ もどる」で戻れます。</p><p>冒険の記録と英語の記録は、この端末のブラウザの中にだけ保存されます。外部へ送信することはありません。ブラウザの履歴やサイトデータを消すと、記録も消えます。</p>',
+  '<p>冒険の記録は、冒険中に自動で保存され、次に開いたときは前回の続きから始まります。タイトル画面へは、メニューの「セーブ」→「タイトルへ もどる」で戻れます。</p><p>冒険の記録と英語の記録は、この端末のブラウザの中にだけ保存されます。外部へ送信することはありません。ブラウザの履歴やサイトデータを消すと、記録も消えます。</p>',
   '<p class="egh">記録を守るために</p>',
   '<p>・iPhone・iPadのSafariでは、しばらく開かないとサイトのデータが消されることがあります。共有ボタンから<b>「ホーム画面に追加」</b>をして、ホーム画面から遊ぶと消えにくくなります。<br>・メニューの「セーブ」→「セーブコードを表示」で出るコードには、冒険と英語の記録の両方が入っています。メモ帳などに控えておけば、機種を変えても、タイトル画面の「コードで再開」で続きから遊べます。</p>',
   '<p>画面の表示のため、文字の形（Google Fonts）と3D表示用のプログラム（cdnjs）をインターネットから読み込みます。このとき、通常のWebページと同じく、お使いの端末の通信情報（IPアドレスなど）が各サービスに届きます。このページを配信しているGitHub Pages（GitHub社）にも、同じく通常のアクセス記録が残ります。本作の作者が、利用者を特定する情報を集めることはありません。発音ボタンは端末の読み上げ機能を使います（端末の設定によっては、外部の音声サービスが使われる場合があります）。</p>',
@@ -16514,28 +16710,6 @@ function egUnpack(d) {
     setTimeout(() => t.remove(), 15000);
   }, 2500);
 })();
-/* ===== resume where the player left off: autosave on the field + open straight into the save ===== */
-const AutoSave = {
-  last: 0, map: null,
-  now(force) {
-    if (!fieldIdle() || !G || !G.clock || !Field.p) return false;
-    const t = performance.now();
-    if (!force && this.map === Field.m.id && t - this.last < 15000) return false;
-    G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir;
-    const ok = saveGame(); this.last = t; this.map = Field.m.id; return ok;
-  },
-};
-setInterval(() => { try { AutoSave.now(false); } catch (e) { } }, 1000);
-document.addEventListener('visibilitychange', () => { if (document.hidden) try { AutoSave.now(true); } catch (e) { } });
-addEventListener('pagehide', () => { try { AutoSave.now(true); } catch (e) { } });
-function egAutoResume() {
-  try { if (sessionStorage.getItem('himori_to_title')) { sessionStorage.removeItem('himori_to_title'); return null; } } catch (e) { }
-  return readSave();
-}
-function egToTitle() {
-  try { AutoSave.now(true); sessionStorage.setItem('himori_to_title', '1'); } catch (e) { }
-  location.reload();
-}
 
 /* ===== story guidance: current goal, chapter cards, journey log ===== */
 const Story = {
@@ -16562,11 +16736,12 @@ const Story = {
   idx() { const i = this.CH.findIndex(c => !c.done()); return i < 0 ? this.CH.length : i; },
   cur() { return this.CH[this.idx()] || null; },
   goalText(c) { c = c || this.cur(); if (!c) return '朝がもどった世界を、自由に歩いてみよう'; return typeof c.goal === 'function' ? c.goal() : c.goal; },
-  nm(s) { return s.replace(/\{name\}/g, (G && G.party && G.party[0] && G.party[0].name) || 'ハル'); },
+  nm(s) { return fillName(s); },
   logHtml() {
     const i = this.idx(), out = ['<p class="egh">いまの目的</p>'];
     const c = this.cur();
     out.push(`<p class="stg"><b>${c ? c.no + '「' + c.t + '」' : '夜明け'}</b><br>${esc(this.goalText(c))}</p>`);
+    out.push(Eigo.dailyHtml());
     out.push('<p class="egh">これまでのあらすじ</p>');
     for (let k = 0; k < Math.min(i, this.CH.length); k++) { const h = this.CH[k]; out.push(`<p><span class="lb">${h.no}</span><b>${h.t}</b><br>${esc(this.nm(h.sum()))}</p>`); }
     if (i === 0) out.push(`<p>${esc(this.nm(this.CH[0].sum()).split('。')[0])}。……旅は、まだ始まったばかりだ。</p>`);
@@ -16582,7 +16757,7 @@ const Story = {
     if (!ok || !G || !G.party) { this.bar.hidden = true; return; }
     const c = this.cur(), key = c ? c.k : 'dawn';
     this.bar.hidden = false;
-    const txt = `<i>目的</i>${esc(this.goalText(c))}`;
+    const txt = `<i>目的</i>${esc(this.goalText(c))}<small>${esc(Eigo.dailyShort())}</small>`;
     if (this.bar._t !== txt) { this.bar.innerHTML = txt; this.bar._t = txt; }
     if (this.lastKey !== key) {
       const first = this.lastKey === null; this.lastKey = key;
@@ -16601,6 +16776,92 @@ const Story = {
   },
 };
 setInterval(() => { try { Story.tick(); } catch (e) { } }, 250);
+
+/* ---------- AI full-clear smoke test (only runs with ?ai-clear=1) ---------- */
+async function aiFullClear() {
+  const started = Date.now();
+  const report = { status: 'running', maps: [], battles: [], flags: [], errors: [] };
+  const show = (status, title, detail) => {
+    let el = document.getElementById('ai-clear-report');
+    if (!el) {
+      el = document.createElement('section'); el.id = 'ai-clear-report'; document.body.appendChild(el);
+      Object.assign(el.style, { position: 'fixed', zIndex: 9999, inset: 'auto 12px 12px 12px', maxWidth: '620px', margin: 'auto', padding: '18px 20px', border: '2px solid #d8b276', borderRadius: '10px', background: 'rgba(9,10,18,.96)', color: '#fff6df', fontFamily: 'sans-serif', boxShadow: '0 20px 70px #000', lineHeight: '1.55' });
+    }
+    el.dataset.status = status;
+    el.innerHTML = `<strong style="display:block;color:${status === 'passed' ? '#9ce6ae' : status === 'failed' ? '#ff9b82' : '#f2c06a'};font-size:20px">${esc(title)}</strong><span style="font-size:13px;color:#c8cedd">${esc(detail)}</span>`;
+  };
+  const loadMap = (id, x, y) => {
+    if (!MAPS[id]) throw new Error(`map missing: ${id}`);
+    Field.load(id, x || 2, y || 2, 'down'); Scene.set(Field); report.maps.push(id);
+  };
+  const setLevel = (lv) => {
+    for (const m of G.party) { m.lv = lv; m.exp = EXP_AT(lv); clampHM(m); }
+    healAll();
+  };
+  const fight = async (id, map, bg, level) => {
+    setLevel(level); loadMap(map, 8, 8); healAll();
+    show('running', `AI通しプレイ中… ${report.battles.length + 1}/6`, ENEMIES[id].name);
+    const result = await Battle.run([id], { boss: true, bg, bgm: id.startsWith('nox') ? 'final' : 'boss', noFlee: true, noAmbush: true, noTrans: true, noMusicResume: true });
+    report.battles.push({ id, result, turns: Battle.turn });
+    if (result !== 'win') throw new Error(`${id}: ${result}`);
+  };
+  try {
+    show('running', 'AI通しプレイを開始', '通常のセーブデータには影響しません。');
+    Snd.stop(0); TURBO = true; endCinematic(); UI.clear(); setFade(0); newGame('AIテスト'); G.clock = true;
+    Battle.auto = true; Battle.aiLearning = true; Battle.aiAnswers = 0; Battle.aiCats = {};
+    addItem('lantern'); addItem('hipotion', 40); addItem('hiether', 40); addItem('feather', 20);
+    G.gold = 9999; G.flags.elder = true;
+    loadMap('leaf', 13, 17); loadMap('world', 9, 35); loadMap('cave1', 15, 21);
+    await fight('treant', 'cave1', 'cave', 8); G.flags.boss1 = G.flags.flameG = true; addItem('flameG');
+
+    loadMap('marina', 10, 9); joinMember('mira'); G.flags.mira = true;
+    loadMap('shrine1', 14, 20); loadMap('shrine2', 14, 18);
+    await fight('serpent', 'shrine2', 'shrine', 14); G.flags.boss2 = G.flags.flameB = true; addItem('flameB');
+
+    loadMap('lux', 14, 20); joinMember('sena'); G.flags.sena = true;
+    loadMap('volcano1', 14, 20); loadMap('volcano2', 14, 18);
+    await fight('dragon', 'volcano2', 'volcano', 22); G.flags.boss3 = G.flags.flameR = true; addItem('flameR');
+
+    G.flags.bridge = true; loadMap('tower1', 11, 18); loadMap('tower2', 11, 18); loadMap('tower3', 11, 18);
+    await fight('varga', 'tower3', 'tower', 28); G.flags.varga = true;
+    await fight('nox1', 'tower3', 'throne', 34);
+    await fight('nox2', 'tower3', 'throne', 34); G.flags.nox = G.flags.dawn = true;
+
+    Battle.aiLearning = false; Battle.auto = false; TURBO = false; G.clock = false;
+    loadMap('world', 27, 31); Field.ending = 1; Scene.set(Field); setFade(0);
+    report.flags = ['elder', 'flameG', 'mira', 'flameB', 'sena', 'flameR', 'bridge', 'varga', 'nox', 'dawn'].filter(k => G.flags[k]);
+    report.questions = Battle.aiAnswers; report.categories = Object.assign({}, Battle.aiCats); report.elapsedMs = Date.now() - started; report.status = 'passed';
+    window.__AI_CLEAR_RESULT__ = report;
+    show('passed', 'AI全クリア成功', `${report.questions}問正解（単語${report.categories.vocab || 0}・熟語${report.categories.idiom || 0}・文法${report.categories.grammar || 0}・長文${report.categories.reading || 0}）・${report.maps.length}マップ・6ボスを通過。`);
+  } catch (e) {
+    Battle.aiLearning = false; Battle.auto = false; TURBO = false;
+    report.status = 'failed'; report.errors.push(String(e && e.stack || e)); report.elapsedMs = Date.now() - started;
+    window.__AI_CLEAR_RESULT__ = report;
+    console.error('AI full clear failed', e);
+    show('failed', 'AI通しプレイ失敗', String(e && e.message || e));
+  }
+  return report;
+}
+
+/* ---------- reading layout preview (only runs with ?reading-preview=1) ---------- */
+async function readingPreview() {
+  Snd.stop(0); UI.clear(); setFade(0); newGame('プレビュー');
+  Eigo.S = Eigo.def(); Eigo.S.set.goal = 'g1'; Eigo.S.set.cat = 'reading'; Eigo.S.set.time = 2;
+  Eigo.save = () => {};
+  Field.load('leaf', 13, 17, 'down'); Scene.set(Field);
+  await Eigo.ask({ who: { name: '読み方練習' } });
+}
+
+/* ---------- friend-name editor preview (only runs with ?name-preview=1) ---------- */
+async function namePreview() {
+  Snd.stop(0); UI.clear(); setFade(0); newGame('ケント', { mira: 'アオイ', sena: 'ヒナ' });
+  joinMember('mira'); joinMember('sena');
+  Object.assign(G.flags, { elder: true, flameG: true, mira: true, flameB: true, sena: true, flameR: true });
+  Field.load('leaf', 13, 17, 'down'); Scene.set(Field); G.clock = false;
+  await menuNames();
+  await Story.log();
+}
+
 
 /* ===== field menu, shop, inn ===== */
 let MENU_EXIT = false;
@@ -16639,7 +16900,7 @@ function itemDescHtml(id) {
   if (it) return esc(it.desc || '');
   if (eq) {
     const p = []; if (eq.atk) p.push('攻撃+' + eq.atk); if (eq.def) p.push('守備+' + eq.def); if (eq.str) p.push('力+' + eq.str); if (eq.mag) p.push('魔力+' + eq.mag); if (eq.spd) p.push('素早さ+' + eq.spd); if (eq.mp) p.push('MP+' + eq.mp);
-    const who = (eq.who || ['hero', 'mira', 'sena']).map(w => w === 'hero' ? G.party[0].name : CHARS[w].name).join('・');
+    const who = (eq.who || ['hero', 'mira', 'sena']).map(w => w === 'hero' ? G.party[0].name : friendName(w)).join('・');
     return `${esc(SLOT_NAME[eq.slot])}　${p.join(' ')}<br><small>${esc(eq.desc || '')}${eq.desc ? '　' : ''}そうび：${esc(who)}</small>`;
   }
   return '';
@@ -16769,7 +17030,7 @@ async function menuStatus() {
 }
 async function menuSave() {
   const r = await menu(['冒険を 記録する', 'セーブコードを 表示', 'タイトルへ もどる', 'やめる'], { x: 82, y: 6, w: 130, title: 'セーブ' });
-  if (r === 2) { egToTitle(); return; }
+  if (r === 2) { autoSaveGame(true); try { sessionStorage.setItem('himori_to_title', '1'); } catch (e) { } location.reload(); return; }
   if (r === 0) {
     G.x = Field.p.x; G.y = Field.p.y; G.dir = Field.p.dir;
     if (saveGame()) { Snd.fx('save'); await say('冒険の 記録を のこしました。\f（このブラウザに 保存されます）'); }
@@ -16787,7 +17048,7 @@ async function menuSettings() {
   const TXT = ['遅い', '普通', '速い'], WALK = ['普通', '速い'];
   const items = () => [
     { html: `BGM<span class="r">${bar(S.bgm)}</span>` }, { html: `効果音<span class="r">${bar(S.sfx)}</span>` },
-    { html: `文字の速さ<span class="r">${TXT[S.text]}</span>` }, { html: `歩く速さ<span class="r">${WALK[S.walk]}</span>` }, { t: '戻る' }];
+    { html: `文字の速さ<span class="r">${TXT[S.text]}</span>` }, { html: `歩く速さ<span class="r">${WALK[S.walk]}</span>` }, { t: '名前を変える' }, { t: '戻る' }];
   const change = (i, d) => {
     if (i === 0) S.bgm = clamp(Math.round((S.bgm + d * 0.1) * 10) / 10, 0, 1);
     else if (i === 1) S.sfx = clamp(Math.round((S.sfx + d * 0.1) * 10) / 10, 0, 1);
@@ -16797,7 +17058,46 @@ async function menuSettings() {
     applySettings(S); storeSettings(S); Snd.fx('cur'); lw.setItems(items());
   };
   const lw = new ListWin({ x: 82, y: 6, w: 168, cls: 'sett', title: '設定', items: items(), lr: d => change(lw.sel, d) });
-  for (; ;) { const r = await lw.choose(); if (r < 0 || r === 4) break; change(r, 1); }
+  for (; ;) {
+    const r = await lw.choose(); if (r < 0 || r === 5) break;
+    if (r === 4) { lw.el.hidden = true; await menuNames(); lw.el.hidden = false; lw.setItems(items()); }
+    else change(r, 1);
+  }
+  lw.close();
+}
+
+async function askPlayerName(label, value, cancel) {
+  for (;;) {
+    const name = await modalInput({ label: `${label}（6文字まで）`, value: value || '', max: 6, y: 66, okText: 'この名前にする', cancel: cancel ? 'もどる' : null });
+    if (name == null && cancel) return null;
+    const nm = String(name || '').trim().slice(0, 6);
+    if (nm) return nm;
+    Snd.fx('buzz'); await say('名前を 1文字以上 入れてください。'); Msg.close();
+  }
+}
+async function menuNames() {
+  const rows = () => [
+    { html: `主人公<span class="r">${esc(G.party[0].name)}</span>` },
+    { html: `魔法使いの友達<span class="r">${esc(friendName('mira'))}</span>` },
+    { html: `僧侶の友達<span class="r">${esc(friendName('sena'))}</span>` },
+    { t: '戻る' },
+  ];
+  const lw = new ListWin({ x: 62, y: 38, w: 188, title: '名前を変える', items: rows() });
+  for (;;) {
+    const r = await lw.choose(); if (r < 0 || r === 3) break;
+    const id = r === 0 ? 'hero' : r === 1 ? 'mira' : 'sena';
+    const current = id === 'hero' ? G.party[0].name : friendName(id);
+    lw.el.hidden = true;
+    const nm = await askPlayerName(id === 'hero' ? '主人公の名前' : id === 'mira' ? '魔法使いの友達の名前' : '僧侶の友達の名前', current, true);
+    lw.el.hidden = false;
+    if (!nm) continue;
+    if (id === 'hero') G.party[0].name = nm;
+    else {
+      G.names[id] = nm;
+      const member = G.party.find(m => m.id === id); if (member) member.name = nm;
+    }
+    saveGame(); Snd.fx('save'); lw.setItems(rows());
+  }
   lw.close();
 }
 
@@ -16949,7 +17249,7 @@ const EV = {
       await say('[y]灯守のランタン[/]を 受けとった！');
       await wait(40);
       await t('elder', 'よいか。 灯の 力は 「ことば」に 宿る。\f戦いの さなか、 異国の ことば…… 英語の 問いが 心に うかぶじゃろう。');
-      await t('elder', '正しく 答えれば 灯は 刃と なる。 すばやく 答えれば、 会心の 一撃じゃ。\fまちがえれば その 力は おまえに はねかえる。 じゃが おそれるな。');
+      await t('elder', '正しく 答えれば 魔物は 動けず、 灯は 必ず 刃と なる。 すばやく 答えれば、 会心の 一撃じゃ。\fまちがえれば 魔物に 反撃の すきを 与える。 強敵ほど その 一撃は 重いぞ。');
       await t('elder', 'まちがえた ことばは、 あとで もう一度 おまえを 試しに くる。\fそれを のりこえれば、 灯は いっそう 強く 燃えるのじゃ。');
       await t('elder', 'まずは 北西の [y]翠の洞窟[/]へ むかうのじゃ。 森の 奥、 山の ふもとに 入り口が ある。');
       await t('elder', 'それと、 少ないが 旅の 足しに してくれ。');
@@ -17151,7 +17451,7 @@ async function titleFlow() {
   Snd.play('title');
   for (; ;) {
     const save = readSave();
-    const items = [{ t: '最初から' }, { t: '続きから', dis: !save }, { t: 'コードで再開' }, { t: 'アプリについて' }];
+    const items = [{ t: '最初から' }, { t: '前回の続きから', dis: !save }, { t: 'コードで再開' }, { t: 'アプリについて' }];
     const r = await menu(items, { x: 80, y: 124, w: 98, cancel: false, sel: save ? 1 : 0 });
     if (r === 0) { logo.remove(); if (await startNew()) return; return titleFlow(); }
     if (r === 1 && save) { if (await continueGame(save)) return; }
@@ -17163,13 +17463,10 @@ async function titleFlow() {
   }
 }
 async function startNew() {
-  let nm = '', tries = 0;
-  while (!nm) {
-    const name = await modalInput({ label: tries ? '名前が 入っていません。 主人公の 名前を 入れてください（6文字まで）' : '主人公の 名前を 入れてください（6文字まで）', value: '', max: 6, y: 72, okText: 'これで はじめる' });
-    nm = String(name || '').trim().slice(0, 6);
-    if (!nm) { tries++; Snd.fx('buzz'); }
-  }
-  newGame(nm);
+  const nm = await askPlayerName('主人公の名前', '', false);
+  const miraName = await askPlayerName('魔法使いの友達の名前', CHARS.mira.name, false);
+  const senaName = await askPlayerName('僧侶の友達の名前', CHARS.sena.name, false);
+  newGame(nm, { mira: miraName, sena: senaName });
   await Eigo.chooseGoal('new');
   Snd.stop(1); await fadeOut(50); UI.clear();
   Snd.play('prologue');
@@ -17247,7 +17544,7 @@ async function runEnding() {
   e.remove();
   // credits
   const cr = domEl('credits', `<div class="big">灯守の旅路</div><div style="letter-spacing:.4em;color:var(--mist)">THE LAMPKEEPER'S JOURNEY</div>` +
-    `<h3>灯守</h3>${esc(G.party[0].name)}<h3>魔法使い</h3>ミラ<h3>僧侶</h3>セナ<h3>リーフ村の 長老</h3>オルド<h3>夜の騎士団長</h3>ヴァルガ<h3>夜の王</h3>ノクス` +
+    `<h3>灯守</h3>${esc(G.party[0].name)}<h3>魔法使い</h3>${esc(friendName('mira'))}<h3>僧侶</h3>${esc(friendName('sena'))}<h3>リーフ村の 長老</h3>オルド<h3>夜の騎士団長</h3>ヴァルガ<h3>夜の王</h3>ノクス` +
     `<h3>ゲームデザイン・シナリオ</h3>Claude<h3>プログラム</h3>Claude<h3>ドット絵・モンスターデザイン</h3>Claude<h3>作曲・効果音</h3>Claude` +
     `<h3>テストプレイ</h3>あなた<h3>Special Thanks</h3>最後まで 遊んでくれた あなたへ<div style="height:${px(70)}"></div>`);
   let y = H;
@@ -17278,14 +17575,22 @@ function boot(data) {
   applySettings(loadSettings());
   requestAnimationFrame(frameLoop);
   const go = () => {
+    const testMode = new URLSearchParams(location.search);
+    if (testMode.get('name-preview') === '1') { namePreview(); return; }
+    if (testMode.get('reading-preview') === '1') { readingPreview(); return; }
+    if (testMode.get('ai-clear') === '1') { aiFullClear(); return; }
     if (data && data.save) { continueGame(JSON.parse(data.save)).then(ok => { if (!ok) titleFlow(); }); }
-    else { const sv = egAutoResume(); if (sv) continueGame(sv).then(ok => { if (!ok) titleFlow(); }); else titleFlow(); }
+    else {
+      let toTitle = false; try { toTitle = !!sessionStorage.getItem('himori_to_title'); sessionStorage.removeItem('himori_to_title'); } catch (e) { }
+      const sv = toTitle ? null : readSave();
+      if (sv) continueGame(sv).then(ok => { if (!ok) titleFlow(); }); else titleFlow();
+    }
   };
   if (document.fonts && document.fonts.load) Promise.race([document.fonts.load('16px "DotGothic16"'), new Promise(r => setTimeout(r, 1500))]).then(go, go); else go();
 }
 window.__T = {
-  quick(name) { endCinematic(); newGame(name || 'ハル'); UI.clear(); setFade(0); Field.load('leaf', 13, 17, 'up'); Scene.set(Field); G.clock = true; G.flags.elder = true; },
-  turbo(v) { TURBO = v; }, get G() { return G; }, Field, Battle, Scene, In, MAPS, ENEMIES, newGame, continueGame, healAll, gainExp, joinMember, addItem, EV, Snd, saveGame, readSave, Eigo };
+  quick(name) { endCinematic(); newGame(name || 'テスト'); UI.clear(); setFade(0); Field.load('leaf', 13, 17, 'up'); Scene.set(Field); G.clock = true; G.flags.elder = true; },
+  turbo(v) { TURBO = v; }, get G() { return G; }, Field, Battle, Scene, In, MAPS, ENEMIES, newGame, continueGame, healAll, gainExp, joinMember, addItem, EV, Snd, saveGame, readSave, Eigo, aiFullClear, readingPreview, namePreview };
 try { if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === 'function') window.claude.hot.snapshot(() => (G && G.clock && Scene.cur === Field && !Field.busy) ? { save: serialize() } : {}); } catch (e) { }
 (window.claude && window.claude.hot && window.claude.hot.ready) ? window.claude.hot.ready(boot) : boot((window.claude && window.claude.hot && window.claude.hot.data) || {});
 

@@ -362,6 +362,13 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .chapcard .crule{width:46%;height:1px;margin:calc(var(--u)*3) auto;background:linear-gradient(90deg,#0000,#e0bf84,#0000)}
 .chapcard .cgl{font-size:calc(var(--u)*7.5);color:#f6ecd8;line-height:1.5}
 .chapcard.out{opacity:0;transition:opacity .8s}
+.guidearrow{--turn:0deg;position:absolute;z-index:4;left:50%;top:57%;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1.5);pointer-events:none;filter:drop-shadow(0 calc(var(--u)*1) calc(var(--u)*2) #000c);animation:guidebob .72s ease-in-out infinite alternate}
+.guidearrow[hidden]{display:none}
+.guidearrow i{display:block;width:0;height:0;border-top:calc(var(--u)*5) solid transparent;border-bottom:calc(var(--u)*5) solid transparent;border-left:calc(var(--u)*10) solid #ffd36f;transform:rotate(var(--turn));filter:drop-shadow(0 0 calc(var(--u)*2.5) #ffb42aaa)}
+.guidearrow b{display:block;white-space:nowrap;font-size:calc(var(--u)*6.4);line-height:1;color:#fff7df;background:#100d0bcc;border:calc(var(--u)*.45) solid #d5a44f;border-radius:calc(var(--u)*5);padding:calc(var(--u)*2) calc(var(--u)*4);text-shadow:0 1px 0 #000}
+.guidearrow.right{--turn:0deg}.guidearrow.down{--turn:90deg}.guidearrow.left{--turn:180deg}.guidearrow.up{--turn:-90deg}
+@keyframes guidebob{from{transform:translate(-50%,calc(-50% - var(--u)*2))}to{transform:translate(-50%,calc(-50% + var(--u)*2))}}
+@media (prefers-reduced-motion:reduce){.guidearrow{animation:none}}
 @keyframes chapin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .egv .stg{background:#f2b75a1f;border-radius:calc(var(--u)*1);padding:calc(var(--u)*2) calc(var(--u)*3)}
 .egv .lb{display:inline-block;font-size:calc(var(--u)*6.5);line-height:1.6;background:var(--bronze2);color:#ffe2a8;border-radius:calc(var(--u)*.8);padding:0 calc(var(--u)*1.8);margin-right:calc(var(--u)*2.5);vertical-align:.1em}
@@ -16750,10 +16757,34 @@ const Story = {
   },
   async log() { await Eigo.view(this.logHtml(), '旅の記録'); },
   // on-screen goal bar + chapter card when the goal changes
-  bar: null, card: null, lastKey: null, shownOnce: false,
+  bar: null, card: null, guide: null, guideKey: null, lastKey: null, shownOnce: false,
+  guideTarget() {
+    if (!G || F('elder') || !Field.m || Field.m.id !== 'leaf') return null;
+    return { x: 21, y: 4, label: '長老の家' };
+  },
+  guideTick(ok) {
+    const target = ok && typeof Field.planTo === 'function' ? this.guideTarget() : null;
+    if (!target) { if (this.guide) this.guide.hidden = true; this.guideKey = null; return; }
+    if (!this.guide) {
+      this.guide = document.createElement('div'); this.guide.className = 'guidearrow';
+      this.guide.innerHTML = '<i aria-hidden="true"></i><b></b>';
+      scr.appendChild(this.guide);
+    }
+    const key = `${Field.m.id}:${Field.p.x},${Field.p.y}:${target.x},${target.y}`;
+    if (this.guideKey !== key) {
+      this.guideKey = key;
+      const plan = Field.planTo(target.x, target.y);
+      if (!plan) { this.guide.hidden = true; return; }
+      const dir = plan.path[0] || plan.face || Field.p.dir || 'up';
+      this.guide.className = `guidearrow ${dir}`;
+      this.guide.querySelector('b').textContent = plan.path.length ? `${target.label}まで あと${plan.path.length}歩` : '長老に 話しかけよう';
+    }
+    this.guide.hidden = false;
+  },
   tick() {
     const ok = typeof fieldIdle === 'function' && fieldIdle() && !Field.ending;
     if (!this.bar) { this.bar = document.createElement('div'); this.bar.className = 'objbar'; this.bar.addEventListener('pointerdown', e => { e.stopPropagation(); if (fieldIdle()) Field.run(() => Story.log()); }); scr.appendChild(this.bar); }
+    this.guideTick(ok);
     if (!ok || !G || !G.party) { this.bar.hidden = true; return; }
     const c = this.cur(), key = c ? c.k : 'dawn';
     this.bar.hidden = false;

@@ -1,5 +1,5 @@
 // home-screen app: keep the game playable offline after the first visit
-const CACHE = 'himori-91041cf31e';
+const CACHE = 'himori-bf8f78b56b';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('himori-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

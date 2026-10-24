@@ -362,13 +362,21 @@ body{margin:0;background:radial-gradient(120% 80% at 50% 0%,#2a2118 0%,#14100c 5
 .chapcard .crule{width:46%;height:1px;margin:calc(var(--u)*3) auto;background:linear-gradient(90deg,#0000,#e0bf84,#0000)}
 .chapcard .cgl{font-size:calc(var(--u)*7.5);color:#f6ecd8;line-height:1.5}
 .chapcard.out{opacity:0;transition:opacity .8s}
-.guidearrow{--turn:0deg;position:absolute;z-index:4;left:50%;top:57%;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1.5);pointer-events:none;filter:drop-shadow(0 calc(var(--u)*1) calc(var(--u)*2) #000c);animation:guidebob .72s ease-in-out infinite alternate}
+.guidearrow{--turn:0rad;position:absolute;z-index:4;width:calc(var(--u)*24);height:calc(var(--u)*14);pointer-events:none;transform:translate(-50%,-50%) rotate(var(--turn));filter:drop-shadow(0 calc(var(--u)*1) calc(var(--u)*2) #000d)}
 .guidearrow[hidden]{display:none}
-.guidearrow i{display:block;width:0;height:0;border-top:calc(var(--u)*5) solid transparent;border-bottom:calc(var(--u)*5) solid transparent;border-left:calc(var(--u)*10) solid #ffd36f;transform:rotate(var(--turn));filter:drop-shadow(0 0 calc(var(--u)*2.5) #ffb42aaa)}
-.guidearrow b{display:block;white-space:nowrap;font-size:calc(var(--u)*6.4);line-height:1;color:#fff7df;background:#100d0bcc;border:calc(var(--u)*.45) solid #d5a44f;border-radius:calc(var(--u)*5);padding:calc(var(--u)*2) calc(var(--u)*4);text-shadow:0 1px 0 #000}
-.guidearrow.right{--turn:0deg}.guidearrow.down{--turn:90deg}.guidearrow.left{--turn:180deg}.guidearrow.up{--turn:-90deg}
-@keyframes guidebob{from{transform:translate(-50%,calc(-50% - var(--u)*2))}to{transform:translate(-50%,calc(-50% + var(--u)*2))}}
-@media (prefers-reduced-motion:reduce){.guidearrow{animation:none}}
+.guidearrow i{position:absolute;left:0;top:50%;width:calc(var(--u)*15);height:calc(var(--u)*5);border-radius:calc(var(--u)*3);background:linear-gradient(180deg,#fff3b6,#ffc34e);box-shadow:0 0 calc(var(--u)*2) #fff7d8,0 0 calc(var(--u)*7) #ffac2fcc;transform:translateY(-50%);animation:guidepulse .72s ease-in-out infinite alternate}
+.guidearrow i::after{content:"";position:absolute;right:calc(var(--u)*-8);top:50%;transform:translateY(-50%);border-top:calc(var(--u)*7) solid transparent;border-bottom:calc(var(--u)*7) solid transparent;border-left:calc(var(--u)*10) solid #ffc34e;filter:drop-shadow(0 0 calc(var(--u)*2) #fff1ae)}
+@keyframes guidepulse{from{opacity:.72;transform:translateY(-50%) scale(.9)}to{opacity:1;transform:translateY(-50%) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.guidearrow i{animation:none}}
+.enemyhps{position:absolute;inset:0;z-index:3;pointer-events:none}
+.enemyhp{position:absolute;left:calc(var(--u)*var(--ehx));top:calc(var(--u)*var(--ehy));width:calc(var(--u)*var(--ehw));box-sizing:border-box;transform:translate(-50%,-100%);padding:calc(var(--u)*1.2) calc(var(--u)*1.8);color:#fff7df;background:linear-gradient(180deg,#17120fe8,#090705e8);border:calc(var(--u)*.55) solid #c9a76b;border-radius:calc(var(--u)*1.4);box-shadow:0 calc(var(--u)*1.3) calc(var(--u)*3) #000b;text-shadow:0 1px 0 #000}
+.enemyhp .ehr{display:flex;align-items:baseline;justify-content:space-between;gap:calc(var(--u)*2);font-size:max(8px,calc(var(--u)*5.3));line-height:1.1;white-space:nowrap}
+.enemyhp .ehr span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.enemyhp .ehr b{flex:none;color:#ffe3a3;font-family:monospace;font-size:max(8px,calc(var(--u)*5));font-weight:700;letter-spacing:0}
+.enemyhp .ehb{height:max(4px,calc(var(--u)*2.5));margin-top:calc(var(--u)*1.1);overflow:hidden;background:#271d18;border:1px solid #090604;border-radius:999px;box-shadow:inset 0 1px 2px #000c}
+.enemyhp .ehb i{display:block;width:var(--ehp);height:100%;background:linear-gradient(90deg,#4fa841,#92e56b);box-shadow:inset 0 1px #d8ffc0;transition:width .18s ease-out}
+.enemyhp.mid .ehb i{background:linear-gradient(90deg,#b88121,#f2c34e);box-shadow:inset 0 1px #fff0aa}
+.enemyhp.low .ehb i{background:linear-gradient(90deg,#9f302f,#ed6158);box-shadow:inset 0 1px #ffc0b8}
 @keyframes chapin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .egv .stg{background:#f2b75a1f;border-radius:calc(var(--u)*1);padding:calc(var(--u)*2) calc(var(--u)*3)}
 .egv .lb{display:inline-block;font-size:calc(var(--u)*6.5);line-height:1.6;background:var(--bronze2);color:#ffe2a8;border-radius:calc(var(--u)*.8);padding:0 calc(var(--u)*1.8);margin-right:calc(var(--u)*2.5);vertical-align:.1em}
@@ -3877,7 +3885,7 @@ const BLog = {
 };
 
 const Battle = {
-  active: false, en: [], fx: [], t: 0, cursor: null, status: null,
+  active: false, en: [], fx: [], t: 0, cursor: null, status: null, hpHud: null, hpHudKey: '',
   async run(group, opt) {
     this.active = true; this.opt = opt; this.boss = !!opt.boss; this.t = 0; this.fx = []; this.cursor = null; this.turn = 0;
     G.battles++;
@@ -3902,6 +3910,12 @@ const Battle = {
     const prevScene = Scene.cur;
     if (bannerEl) { bannerEl.remove(); bannerEl = null; }
     Scene.set(this);
+    this.hpHud = document.createElement('div');
+    this.hpHud.className = 'enemyhps';
+    this.hpHud.setAttribute('aria-label', '敵のHP');
+    uiRoot.appendChild(this.hpHud);
+    this.hpHudKey = '';
+    this.refreshEnemyHp();
     this.status = new StatusStrip(4);
     await fadeIn(10);
     let result;
@@ -3912,6 +3926,8 @@ const Battle = {
       await fadeOut(14);
     } else { await fadeOut(30); }
     BLog.close(); this.status.remove(); this.cursor = null;
+    if (this.hpHud) this.hpHud.remove();
+    this.hpHud = null; this.hpHudKey = '';
     for (const m of G.party) { m.buff = {}; m.st.sleep = false; delete m.defending; }
     this.active = false;
     if (prevScene === Field || !opt.stay) { Scene.set(Field); }
@@ -3927,6 +3943,23 @@ const Battle = {
     list.forEach(e => { e.x = Math.round(x); e.y = Math.round(152 - e.h); x += e.w + gap; });
   },
   liveEn() { return this.en.filter(e => !e.dead); },
+  refreshEnemyHp() {
+    if (!this.hpHud) return;
+    const live = this.liveEn();
+    const key = live.map(e => `${e.name}:${Math.max(0, e.hp)}/${e.mhp}:${e.x},${e.y},${e.w}`).join('|');
+    if (key === this.hpHudKey) return;
+    this.hpHudKey = key;
+    const hudW = live.length === 1 ? 116 : live.length === 2 ? 88 : 68;
+    this.hpHud.innerHTML = live.map(e => {
+      const hp = Math.max(0, Math.round(e.hp));
+      const pct = Math.max(0, Math.min(100, hp / Math.max(1, e.mhp) * 100));
+      const cls = pct <= 25 ? ' low' : pct <= 50 ? ' mid' : '';
+      const x = Math.max(hudW / 2 + 2, Math.min(W - hudW / 2 - 2, e.x + e.w / 2));
+      const y = Math.max(34, e.y - 3);
+      return `<div class="enemyhp${cls}" style="--ehx:${x};--ehy:${y};--ehw:${hudW};--ehp:${pct.toFixed(1)}%" aria-label="${esc(e.name)} HP ${hp} / ${e.mhp}">` +
+        `<div class="ehr"><span>${esc(e.name)}</span><b>HP ${hp}/${e.mhp}</b></div><div class="ehb"><i></i></div></div>`;
+    }).join('');
+  },
   partyIdx(m) { return G.party.indexOf(m); },
   async loop() {
     const names = {}; for (const e of this.en) names[e.E.name] = (names[e.E.name] || 0) + 1;
@@ -4447,6 +4480,7 @@ const Battle = {
   update() {
     this.t++;
     if (R3.ok && B3.scene) B3.update(this.en, this.focus);
+    this.refreshEnemyHp();
     for (const e of this.en) { if (e.flash > 0) e.flash--; else if (e.flash < 0) e.flash++; if (e.shake > 0) e.shake--; }
     for (const f of this.fx) { f.k = (f.k || 0) + 1; if (f.step) f.step(f.k); }
     this.fx = this.fx.filter(f => f.k < f.life);
@@ -16767,18 +16801,34 @@ const Story = {
     if (!target) { if (this.guide) this.guide.hidden = true; this.guideKey = null; return; }
     if (!this.guide) {
       this.guide = document.createElement('div'); this.guide.className = 'guidearrow';
-      this.guide.innerHTML = '<i aria-hidden="true"></i><b></b>';
+      this.guide.setAttribute('aria-label', '長老の家へ進む方向');
+      this.guide.innerHTML = '<i aria-hidden="true"></i>';
       scr.appendChild(this.guide);
     }
     const key = `${Field.m.id}:${Field.p.x},${Field.p.y}:${target.x},${target.y}`;
+    let dir = Field.p.dir || 'up';
     if (this.guideKey !== key) {
       this.guideKey = key;
       const plan = Field.planTo(target.x, target.y);
       if (!plan) { this.guide.hidden = true; return; }
-      const dir = plan.path[0] || plan.face || Field.p.dir || 'up';
-      this.guide.className = `guidearrow ${dir}`;
-      this.guide.querySelector('b').textContent = plan.path.length ? `${target.label}まで あと${plan.path.length}歩` : '長老に 話しかけよう';
+      dir = plan.path[0] || plan.face || dir;
+      this.guide.dataset.dir = dir;
     }
+    dir = this.guide.dataset.dir || dir;
+    const [dx, dy] = DIRS[dir], px = Field.p.px / 16 + .5, py = Field.p.py / 16 + .62;
+    const project = (x, y) => {
+      if (R3.ok && window.THREE && F3.cam) {
+        const h = Field.m.kind === 'world' ? F3.hAt(x, y) : 0;
+        const v = new THREE.Vector3(x, h + .12, y).project(F3.cam);
+        return { x: (v.x + 1) * 50, y: (1 - v.y) * 50 };
+      }
+      return { x: (x * 16 - Field.cam.x) / W * 100, y: (y * 16 - Field.cam.y) / H * 100 };
+    };
+    // Keep the marker clearly off the hero's body while still tying it to the next route step.
+    const from = project(px, py), to = project(px + dx * 2.1, py + dy * 2.1);
+    this.guide.style.left = `${to.x}%`;
+    this.guide.style.top = `${to.y}%`;
+    this.guide.style.setProperty('--turn', `${Math.atan2(to.y - from.y, to.x - from.x)}rad`);
     this.guide.hidden = false;
   },
   tick() {
@@ -16891,6 +16941,15 @@ async function namePreview() {
   Field.load('leaf', 13, 17, 'down'); Scene.set(Field); G.clock = false;
   await menuNames();
   await Story.log();
+}
+
+/* ---------- battle UI preview (only runs with ?battle-preview=1) ---------- */
+async function battlePreview() {
+  Snd.stop(0); UI.clear(); setFade(0); newGame('プレビュー');
+  G.clock = false; G.flags.elder = true;
+  for (const m of G.party) { m.lv = 8; m.exp = EXP_AT(8); clampHM(m); }
+  healAll(); Field.load('cave1', 15, 21, 'up'); Scene.set(Field);
+  await Battle.run(['treant'], { boss: true, bg: 'cave', bgm: 'boss', noFlee: true, noAmbush: true, noTrans: true, noMusicResume: true });
 }
 
 
@@ -17609,6 +17668,7 @@ function boot(data) {
     const testMode = new URLSearchParams(location.search);
     if (testMode.get('name-preview') === '1') { namePreview(); return; }
     if (testMode.get('reading-preview') === '1') { readingPreview(); return; }
+    if (testMode.get('battle-preview') === '1') { battlePreview(); return; }
     if (testMode.get('ai-clear') === '1') { aiFullClear(); return; }
     if (data && data.save) { continueGame(JSON.parse(data.save)).then(ok => { if (!ok) titleFlow(); }); }
     else {
@@ -17621,7 +17681,7 @@ function boot(data) {
 }
 window.__T = {
   quick(name) { endCinematic(); newGame(name || 'テスト'); UI.clear(); setFade(0); Field.load('leaf', 13, 17, 'up'); Scene.set(Field); G.clock = true; G.flags.elder = true; },
-  turbo(v) { TURBO = v; }, get G() { return G; }, Field, Battle, Scene, In, MAPS, ENEMIES, newGame, continueGame, healAll, gainExp, joinMember, addItem, EV, Snd, saveGame, readSave, Eigo, aiFullClear, readingPreview, namePreview };
+  turbo(v) { TURBO = v; }, get G() { return G; }, Field, Battle, Scene, In, MAPS, ENEMIES, newGame, continueGame, healAll, gainExp, joinMember, addItem, EV, Snd, saveGame, readSave, Eigo, aiFullClear, readingPreview, namePreview, battlePreview };
 try { if (window.claude && window.claude.hot && typeof window.claude.hot.snapshot === 'function') window.claude.hot.snapshot(() => (G && G.clock && Scene.cur === Field && !Field.busy) ? { save: serialize() } : {}); } catch (e) { }
 (window.claude && window.claude.hot && window.claude.hot.ready) ? window.claude.hot.ready(boot) : boot((window.claude && window.claude.hot && window.claude.hot.data) || {});
 
